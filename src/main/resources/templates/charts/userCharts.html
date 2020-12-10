@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script src="js/echarts.min.js" th:src="@{/js/echarts.min.js}"></script>
+</head>
+<body>
+    <div id="pieChart" style="width: 600px;height:400px;"></div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+    //第二个  饼状图，查询每天增加的学生的人数；
+    $.ajax({
+        type: "post",
+        url: "/getUserNames",
+        dataType: "json",
+        success: function (dataJson) {
+            var names = [];
+            var nums = [];
+
+            var alldatas = [];
+            console.log(alldatas);
+            $.each(dataJson.data,function (i,v) {
+                names[i] = v.name;
+                nums[i] = v.value;
+                alldatas[i] = v;
+            });
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieChart'));
+
+            // 指定图表的配置项和数据
+            option = {
+                title: {
+                    text: '根据日期查看新增用户数量',
+                    subtext: '统计数据',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: names
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: alldatas,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },error: function () {
+            alert("失败了");
+        }
+    });
+</script>
+
+
+
+</html>

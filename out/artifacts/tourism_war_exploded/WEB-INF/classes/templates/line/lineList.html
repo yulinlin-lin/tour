@@ -1,0 +1,382 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}"/>
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body>
+
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容"/>
+            </div>
+            <a class="layui-btn search_btn" data-type="reload">搜索</a>
+        </div>
+
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal addLine_btn">添加线路</a>
+        </div>
+
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+    </div>
+    </form>
+</blockquote>
+
+<table id="lineList" lay-filter="lineList"></table>
+
+<!--操作-->
+<script type="text/html" id="lineOperate">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script  type="text/javascript"  th:inline="none">
+
+    layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            laytpl = layui.laytpl,
+            table = layui.table;
+
+        var base = "http://localhost:8080/images/line/";
+
+        //线路列表
+        var tableIns = table.render({
+            elem: '#lineList',
+            url : '/lineGetList',
+            cellMinWidth : 95,
+            page : true,
+            height : "full-125",
+            limit : 10,
+            limits:[10,15,20,25],
+            id : "lineList",
+            cols:[[
+                {type: 'checkbox', fixed:'left'},
+                {type:'numbers',title:'序号'},
+                {field: 'lineId', title: 'ID', width:80, align:"center"},
+                {field: 'startCity', title: '出发城市',width:80,align:"center"},
+                {field: 'endCity', title: '结束城市',align:'center'},
+                {field: 'lineTitle', title: '标题',align:'center'},
+                {field: 'lineIntroduce', title: '线路简单介绍',align:'center'},
+                {field: 'imgFileName', title: '图片封面',align:'center',templet: function (d) {
+                        return "<div id=\"photo-list_" + d.lineId + "\"><img onclick='showLinePic(this);' src=\"" + base + d.imgFileName + "\"  style=\"width: 40px;\" lay-event=\"showPic\" ></div>";
+                    }},
+                {field: 'lineSup', title: '供应商',align:'center'},
+                {field: 'linePrice', title: '促销价格',align:'center'},
+                {field: 'lineOldPrice', title: '原价格',align:'center'},
+                {field: 'startDate', title: '出游日期',align:'center'},
+                {field: 'traveDays', title: '旅游天数',align:'center'},
+                {field: 'canBack', title: '是否可退',align:'center'},
+                {field: 'note', title: '备注',align:'center'},
+                {field: 'active', title: '是否上架',width:120, align:'center',templet: '#activeTemp'},
+                {field: 'lineType', title: '线路类型',align:'center'},
+                {field: 'createTime', title: '创建时间',align:'center'},
+                {title: '操作',  templet:'#lineOperate',width:120,fixed:"right",align:"center"}
+            ]],done: function (res, curr, count) {
+                //显示是否可以退
+                $("[data-field='canBack']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("可退")
+                    }else if($(this).text()=='2'){
+                        $(this).text("不可退")
+                    }
+                });
+
+                //显示线路所属的类型；
+                $("[data-field='lineType']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("四川线路")
+                    }else if($(this).text()=='2'){
+                        $(this).text("国内线路")
+                    }else if($(this).text()=='3'){
+                        $(this).text("国外线路")
+                    }
+                });
+            }
+        });
+
+
+
+
+
+        //点击搜索按钮
+        $(".search_btn").on("click",function () {
+            table.reload("lineList",{
+                page: {
+                    curr: 1
+                },
+                where: {
+                    key: $(".searchVal").val()
+                }
+            })
+        });
+
+
+        //点击批量删除的按钮
+        $(".delAll_btn").on("click",function () {
+            var checkStatuss = table.checkStatus('lineList'),
+                data = checkStatuss.data,
+                deList = [];
+            var len = data.length;
+            if (len<=0){
+                layer.msg("请至少选择一行记录",{icon:2});
+                return ;
+            }
+            data.forEach(function (n,i) {
+                deList.push(n.lineId);
+            });
+            if (deList != ''){
+                layui.layer.open({
+                    content: "确定删除所选项吗？",
+                    btn: ['确定','取消'],
+                    yes: function (index) {
+                        $.ajax({
+                            type: "post",
+                            url: "delAllLine",
+                            data: "ids="+deList,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code == 0){
+                                    layer.msg("删除成功！",{icon:1});
+                                    table.reload('lineList',{});
+                                }else{
+                                    layer.msg("删除失败！",{icon: 2});
+                                }
+                            },
+                            error: function () {
+                                layer.msg("系统错误！")
+                            }
+                        });
+                        form.render();
+                        layer.close(index);
+                    },btn2: function (index,layero) {
+                        form.render();
+                        layer.close(index);
+                    }
+                    , cancel: function () {
+                        //右上角关闭回调
+                        form.render();
+                        // return false; //开启该代码可禁止点击该按钮关闭
+                    }
+                });
+
+
+
+            }
+
+        });
+
+
+        //    监听开关点击事件
+        form.on('switch(showstatus)', function (data) {
+            var contexts;
+            var sta;
+            var x = data.elem.checked;
+            console.log(x);
+            if (x == true){
+                contexts = "上架";
+                sta = 1;
+            }else{
+                contexts = "下架";
+                sta = 2;
+            }
+            layer.open({
+                content: "你确定要"+contexts+"?",
+                btn: ['确定','取消'],
+                yes: function (index,layero) {
+                    //    按钮1确定的回调
+                    data.elem.checked = x;
+                    //    对商品进行上架或者下架处理
+                    $.ajax({
+                        type: "post",
+                        url: "/updateLineActive",
+                        dataType: "json",
+                        data: {"id":data.value,"status": sta},
+                        success: function (data) {
+                            if (data.code == 0){
+                                layer.msg(contexts+'成功',
+                                    // 提示的样式
+                                    {icon: 1, time: 2000,});
+
+                                // 数据重载 active那里的？
+                                tableIns.reload();
+                            }
+                        }
+                });
+                    form.render();
+                    layer.close(index);
+                }
+                ,btn2: function (index,layero) {
+                    data.elem.checked = x;
+                    form.render();
+                    layer.close(index);
+                }
+                , cancel: function () {
+                    //右上角关闭回调
+                    data.elem.checked = !x;
+                    form.render();
+                    // return false; //开启该代码可禁止点击该按钮关闭
+                }
+            });
+            return false;
+        });
+
+
+        //    点击添加酒店
+        $(".addLine_btn").click(function () {
+            addLine();
+        });
+
+        //    添加线路的函数
+        function addLine() {
+            var index = layui.layer.open({
+                title: '添加线路',
+                type: 2,
+                content: "/showAddLine"
+            });
+            layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
+
+
+        table.on('tool(lineList)',function (obj) {
+            var layEvent = obj.event,
+                data = obj.data;
+            if (layEvent == 'edit'){
+                editLine(data);
+            }else if (layEvent == 'del'){
+                layer.open({
+                    content: "你确定要删除吗?",
+                    btn: ['确定','取消'],
+                    yes: function (index,layero) {
+                        $.ajax({
+                            type: "post",
+                            url: "/deleteLineById",
+                            dataType: "json",
+                            data: {"id":data.lineId},
+                            success: function (data) {
+                                if (data.code == 0){
+                                    layer.msg('成功删除',
+                                        // 提示的样式
+                                        {icon: 1, time: 2000,});
+                                    // 数据重载 active那里的？
+                                    tableIns.reload();
+                                }
+                            }
+                        });
+                        form.render();
+                        layer.close(index);
+                    }
+                    ,btn2: function (index,layero) {
+                        form.render();
+                        layer.close(index);
+                    }
+                    , cancel: function () {
+                        //右上角关闭回调
+                        form.render();
+                        // return false; //开启该代码可禁止点击该按钮关闭
+                    }
+                });
+                return false;
+            }
+        });
+
+
+
+    //    编辑线路
+        function editLine(edit) {
+            var index = layui.layer.open({
+               title: "编辑线路",
+                type: 2,
+                content: "/showEditLine",
+                success: function (layero,index) {
+                    var body = layui.layer.getChildFrame('body', index);
+                    if(edit){
+                        body.find(".lineId").val(edit.lineId);
+                        body.find(".startCity").val(edit.startCity);
+                        body.find(".endCity").val(edit.endCity);
+                        body.find(".lineTitle").val(edit.lineTitle);
+                        body.find(".lineIntroduce").val(edit.lineIntroduce);
+                        body.find(".lineSup").val(edit.lineSup);
+                        body.find(".linePrice").val(edit.linePrice);
+                        body.find(".lineOldPrice").val(edit.lineOldPrice);
+                        body.find(".startDate").val(edit.startDate);
+                        body.find(".traveDays").val(edit.traveDays);
+                        body.find("input[name=canBack][value=1]").attr("checked",edit.canBack == 1? true : false);
+                        body.find("input[name=canBack][value=2]").attr("checked",edit.canBack == 2? true : false);
+                        body.find(".note").val(edit.note);
+                        body.find("input[name=type][value=1]").attr("checked",edit.lineType == 1? true : false);
+                        body.find("input[name=type][value=2]").attr("checked",edit.lineType == 2? true : false);
+                        body.find("input[name=type][value=3]").attr("checked",edit.lineType == 3? true : false);
+                        form.render();
+                    }
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回线路列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize", function () {
+                layui.layer.full(index);
+            })
+        }
+
+    });
+
+
+    //放大显示   各个的图片
+    function showLinePic(obj) {
+        var paren = $(obj).parent();
+        var idstr = paren.attr("id");
+        var id_str = '#'+idstr;
+        layui.use("layer",function () {
+            var layer = layui.layer;
+            layer.photos({
+                photos: id_str,
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+
+        });
+    }
+</script>
+
+
+
+
+</body>
+<!--显示是否上架的开关-->
+<script type="text/html" id="activeTemp">
+
+    {{#  if(d.active==1){ }}
+    <input type="checkbox" name="status" lay-skin="switch" checked   lay-text="下架|上架"  value= {{ d.lineId}}  lay-filter="showstatus" >
+    {{#  } else { }}
+    <input type="checkbox" name="status" lay-skin="switch"  lay-text="下架|上架"  value= {{ d.lineId}} lay-filter="showstatus" >
+    {{#  } }}
+</script>
+</html>

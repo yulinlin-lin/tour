@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>线路详情</title>
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <link rel="stylesheet" href="css/global.css" th:href="@{/css/global.css}">
+
+    <style>
+
+        .layui-main{
+            text-align: center;
+            height:300px;
+            margin: 0px auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--头部开始-->
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" href="/">
+            <img src="images/git.png" th:src="@{/images/git.png}" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item layui-this">
+                <a href="http://127.0.0.1:8080/images/bg.jpg"><i class="iconfont icon-jiaoliu"></i>私人定制</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>游记</a>
+            </li>
+            <!--<li class="layui-nav-item">
+                <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i></a>
+            </li>-->
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item">
+                <a class="iconfont icon-touxiang layui-hide-xs" href="../user/login.html"></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="../user/login.html">登入</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="../user/reg.html">注册</a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs">
+                <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs">
+                <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
+            </li>
+
+            <!--<input type="text" placeholder="验证码" name="checkImg" id="checkImg" />
+            <img style="cursor: pointer;" alt="" src="/img" th:src="@{/img}" id="img"/><a href="javascript:void(0);">看不清，换一张</a>
+
+            <br/>-->
+
+
+        </ul>
+    </div>
+</div>
+<!--头部结束 -->
+
+        <div class="layui-main" >
+            <div style="margin-top: 50px;">
+                <h1>下单成功！</h1>
+                <button type="button" class="layui-btn">关闭</button>
+            </div>
+        </div>
+
+
+<div id="footer">
+    <!--尾部开始-->
+    <div class="fly-footer">
+        <p><a href="#">丁香社区</a> 韶关学院 &copy; <a href="#">sgu.com</a></p>
+        <p>
+            <a href="#" target="_blank">关于我们</a>
+            <a href="#" target="_blank">联系我们</a>
+            <a href="#" target="_blank">微信公众号</a>
+        </p>
+        <p class="fly-union">
+            <a href="#" target="_blank" rel="nofollow" upyun><img src="images/alipay.jpg" th:src="@{/images/alipay.jpg}"></a>
+            <span>提供 money 赞助</span>
+        </p>
+    </div>
+    <!--尾部结束 -->
+</div>
+
+<script>
+
+    $(function () {
+        $(".layui-btn").on("click",function () {
+            window.opener=null;
+            window.open('','_self');
+            window.close();
+        });
+    });
+
+
+</script>
+
+</body>
+</html>

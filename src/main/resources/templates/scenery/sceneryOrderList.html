@@ -1,0 +1,195 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}"/>
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body>
+
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input searchVal" placeholder="请输入模糊匹配用户名"/>
+            </div>
+            <a class="layui-btn search_btn" data-type="reload">搜索</a>
+        </div>
+
+        <!--  <div class="layui-inline">
+              <a class="layui-btn layui-btn-normal addLine_btn">添加线路</a>
+          </div>-->
+
+        <!--<div class="layui-inline">
+            <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+        </div>-->
+    </form>
+</blockquote>
+
+<table id="sceneryOrderList" lay-filter="sceneryOrderList"></table>
+
+<!--操作-->
+<script type="text/html" id="sceneryOrderListOperate">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script  type="text/javascript"  th:inline="none">
+
+    layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            laytpl = layui.laytpl,
+            table = layui.table;
+
+        //线路列表
+        var tableIns = table.render({
+            elem: '#sceneryOrderList',
+            url : '/queryAllSceneryOrdes',
+            cellMinWidth : 95,
+            page : true,
+            height : "full-125",
+            limit : 10,
+            limits:[10,15,20,25],
+            id : "sceneryOrderList",
+            cols:[[
+                {type: 'checkbox', fixed:'left'},
+                {type:'numbers',title:'序号'},
+                {field: 'sceneryOrderId', title: '订单ID', width:80, align:"center"},
+                {field: 'userName', title: '用户名',width:180,align:"center"},
+                {field: 'userPhone', title: '用户电话',align:'center',width:180},
+                {field: 'idNumber', title: '用户身份证',align:'center',width:180},
+                {field: 'userSex', title: '性别',align:'center'},
+                {field: 'userNote', title: '备注',align:'center',width:180},
+                {field: 'userDate', title: '使用日期',align:'center',width:180},
+                {field: 'sceneryName', title: '景点名称',align:'center',width:180},
+                {field: 'ticketType', title: '门票类型',align:'center',width:100},
+                {field: 'sceneryPrice', title: '单价',align:'center'},
+                {field: 'sceneryNumber', title: '下单数量',align:'center',width:180},
+                {field: 'totalPrice', title: '总计',align:'center'},
+                {field: 'orderUserName', title: '下单用户',align:'center'},
+                {field: 'createTime', title: '下单时间',align:'center',width:180},
+                {title: '操作',  templet:'#sceneryOrderListOperate',width:120,fixed:"right",align:"center"}
+            ]]
+        });
+
+
+        //点击搜索按钮
+        $(".search_btn").on("click",function () {
+            table.reload("sceneryOrderList",{
+                page: {
+                    curr: 1
+                },
+                where: {
+                    key: $(".searchVal").val()
+                }
+            })
+        });
+
+
+
+
+
+        table.on('tool(sceneryOrderList)',function (obj) {
+            var layEvent = obj.event,
+                data = obj.data;
+            if (layEvent == 'edit'){
+                editSceneryOrder(data);
+            }else if (layEvent == 'del'){
+                layer.open({
+                    content: "你确定要删除吗?",
+                    btn: ['确定','取消'],
+                    yes: function (index,layero) {
+                        $.ajax({
+                            type: "post",
+                            url: "/deleteSceneryOrderById",
+                            dataType: "json",
+                            data: {"id":data.sceneryOrderId},
+                            success: function (data) {
+                                if (data.code == 0){
+                                    layer.msg('成功删除',
+                                        // 提示的样式
+                                        {icon: 1, time: 2000,});
+                                    // 数据重载 active那里的？
+                                    tableIns.reload();
+                                }
+                            }
+                        });
+                        form.render();
+                        layer.close(index);
+                    }
+                    ,btn2: function (index,layero) {
+                        form.render();
+                        layer.close(index);
+                    }
+                    , cancel: function () {
+                        //右上角关闭回调
+                        form.render();
+                    }
+                });
+                return false;
+            }
+        });
+
+
+
+        //    编辑线路订单
+        function editSceneryOrder(edit) {
+            // console.log(edit)
+            var index = layui.layer.open({
+                title: "编辑订单",
+                type: 2,
+                content: "/toEditSceneryOrderPage",
+                success: function (layero,index) {
+                    var body = layui.layer.getChildFrame('body', index);
+                    if(edit){
+                        body.find(".sceneryOrderId").val(edit.sceneryOrderId);
+                        body.find(".userName").val(edit.userName);
+                        body.find(".userPhone").val(edit.userPhone);
+                        body.find(".idNumber").val(edit.idNumber);
+                        body.find(".userNote").val(edit.userNote);
+                        body.find(".userDate").val(edit.userDate);
+                        body.find(".sceneryName").val(edit.sceneryName);
+                        body.find(".ticketType").val(edit.ticketType);
+                        body.find("input[name=userSex][value='男']").attr("checked",edit.userSex == '男'? true : false);
+                        body.find("input[name=userSex][value='女']").attr("checked",edit.userSex == '女'? true : false);
+                        body.find(".sceneryPrice").val(edit.sceneryPrice);
+                        body.find(".sceneryNumber").val(edit.sceneryNumber);
+                        body.find(".totalPrice").val(edit.totalPrice);
+                        body.find(".orderUserName").val(edit.orderUserName);
+                        body.find(".createTime").val(edit.createTime);
+                        form.render();
+                    }
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize", function () {
+                layui.layer.full(index);
+            });
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

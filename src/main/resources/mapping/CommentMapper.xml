@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ICommentMapper">
+    <select id="findAllCommentsByPage" resultType="com.sgu.tourism.vo.CommentVo">
+
+
+
+                                SELECT c.*,u.`userRealName` userName FROM `comment` c,`user` u
+
+
+
+        <where>
+            c.`user_id`=u.`user_id`
+
+
+
+            <if test="key != null and key != ''">
+
+
+
+                                                                and content  LIKE CONCAT("%",#{key},"%")
+
+
+
+            </if>
+
+
+
+                        and  c.del = 0
+        </where>
+
+
+
+                                ORDER BY id DESC LIMIT #{page},#{limit}
+
+
+
+    </select>
+
+
+    <select id="getCount" resultType="Integer" parameterType="String">
+
+
+
+                                SELECT count(*) FROM `comment` c,`user` u
+
+
+
+        <where>
+            c.`user_id`=u.`user_id`
+
+
+
+            <if test="key != null and key != ''">
+
+
+
+                                                                and content  LIKE CONCAT("%",#{key},"%")
+
+
+
+            </if>
+
+
+
+                        and c.del = 0
+        </where>
+    </select>
+
+
+    <delete id="deleteCommentById" parameterType="Integer">
+        <!--DELETE FROM `comment` WHERE id = #{id}-->
+
+        update comment set del = 1 where id = #{id}
+
+
+    </delete>
+
+
+    <insert id="addComment" parameterType="com.sgu.tourism.entity.Comment">
+
+
+
+                                insert into comment(user_id, goods_id, content, content_type, create_time,del)
+                                VALUES(#{userId},#{goodsId},#{content},#{contentType},#{createTime},0)
+
+
+
+    </insert>
+</mapper>

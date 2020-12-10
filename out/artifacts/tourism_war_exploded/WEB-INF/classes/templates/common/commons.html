@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header(title)">
+    <title th:text="${title}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <link rel="stylesheet" href="css/global.css" th:href="@{/css/global.css}">
+</head>
+
+
+<body>
+
+<div th:fragment="comheader">
+    <!--头部开始-->
+    <div class="fly-header layui-bg-black">
+        <div class="layui-container">
+            <a class="fly-logo" href="/">
+                <img src="images/git.png" alt="layui">
+            </a>
+            <ul class="layui-nav fly-nav layui-hide-xs">
+                <li class="layui-nav-item layui-this">
+                    <a href="/toPrivatePage" th:href="@{/toPrivatePage}"><i class="iconfont icon-jiaoliu"></i>私人定制</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href=""><i class="iconfont icon-iconmingxinganli"></i>游记</a>
+                </li>
+                <!--<li class="layui-nav-item">
+                    <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i></a>
+                </li>-->
+            </ul>
+
+            <ul class="layui-nav fly-nav-user">
+
+                <!-- 未登入的状态 -->
+                <li class="layui-nav-item">
+                    <a class="iconfont icon-touxiang layui-hide-xs" href="../user/login.html"></a>
+                </li>
+                <!--<li class="layui-nav-item">
+                    <a href="../user/login.html">登入</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="../user/reg.html">注册</a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs">
+                    <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
+                </li>-->
+
+                <!-- 登入后的状态 -->
+
+                <li class="layui-nav-item">
+                    <a class="fly-nav-avatar" href="javascript:;">
+                        <cite class="layui-hide-xs" th:text="${session.user.userName}">俊俊</cite>
+                        <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+                        <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+                        <img th:src="@{'images/user/'+${session.user.imgFileName}}">
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                        <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+                        <dd><a href="user/home.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+                        <hr style="margin: 5px 0;">
+                        <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+                    </dl>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <!--头部结束 -->
+</div>
+
+<!-- 通用JS -->
+<div th:fragment="footer">
+    <!--尾部开始-->
+    <div class="fly-footer">
+        <p><a href="#">丁香社区</a> 韶关学院 &copy; <a href="#">sgu.com</a></p>
+        <p>
+            <a href="#" target="_blank">关于我们</a>
+            <a href="#" target="_blank">联系我们</a>
+            <a href="#" target="_blank">微信公众号</a>
+        </p>
+        <p class="fly-union">
+            <a href="#" target="_blank" rel="nofollow" upyun><img src="images/alipay.jpg" th:src="@{/images/alipay.jpg}"></a>
+            <span>提供赞助</span>
+        </p>
+    </div>
+    <!--尾部结束 -->
+</div>
+</body>
+</html>

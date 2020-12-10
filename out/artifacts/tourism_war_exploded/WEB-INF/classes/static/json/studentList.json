@@ -1,0 +1,21 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 15,
+	"data": [
+		{
+			
+            "studentId":"1",
+            "studentName":"黄俊林",
+            "studentNumber":"SG17115073051",
+            "studentGrade":"2017级软工3",
+            "studentSex":"男",
+            "studentPhoneNumber":"13488888888",
+            "studentAddress":"韶关",
+            "studentBirthday":"1000-00-00",
+            "createTime":"2020-11-01 21:31:48",
+            "updateTime":"2020-11-01 21:31:48"
+		}
+	]
+}	
+

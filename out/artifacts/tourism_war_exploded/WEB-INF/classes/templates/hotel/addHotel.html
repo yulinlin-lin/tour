@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css"  th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}" />
+    <script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body class="childrenBody">
+<form class="layui-form layui-row layui-col-space10">
+    <div class="layui-col-md9 layui-col-xs12">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md9 layui-col-xs7">
+
+                <div class="layui-form-item magt3" >
+                    <label class="layui-form-label ">酒店名:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotelName" class="layui-input hotelName" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">地址:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotelLocation" class="layui-input hotelLocation" required lay-verify="required">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">促销价格:</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="hotelPrice" class="layui-input hotelPrice" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">原价格:</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="hotelOldPrice" class="layui-input hotelPrice" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">酒店介绍:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotelDetailed" class="layui-input hotelLocation" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">电话:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="tel" class="layui-input hotelLocation" required lay-verify="required">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">景点类型</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="htype" value="1" title="四川酒店">
+                        <input type="radio" name="htype" value="2" title="国内酒店" checked>
+                        <input type="radio" name="htype" value="3" title="国外酒店" checked>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">上下架:</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="下架|上架" checked>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">照片</label>
+
+                    <div class="layui-input-block">
+                        <!--                下面这个是： 上传的按钮-->
+                        <button type="button" class="layui-btn" id="upload1">上传图片</button>
+                        <!--                图片上传成功后，返回来的图url 保存在下面这个隐藏的input里面；-->
+                        <input type="hidden" id="img_url" name="imgFileName" value=""/>
+
+                        <!--                图片预览的div-->
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item magt3" style="margin-left:120px">
+                    <button class="layui-btn" lay-submit lay-filter="add">提交</button>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<script>
+    layui.use(['layer', 'form', 'upload', 'laydate'], function() {
+        let layer = layui.layer;
+        let form = layui.form;
+        let upload = layui.upload;
+        let laydate = layui.laydate;
+
+
+
+        upload.render({
+            elem: '#upload1',
+            url: '/hotelUploadImg',
+            before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            },
+            done: function(res) {
+                // 如果上传失败
+                if(res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                // 上传成功
+                //上传成功
+                alert("上传成功"+res.url);
+                document.getElementById("img_url").value = res.url;
+            },
+            error: function() {
+                // 演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function() {
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+
+
+        //监听提交
+        //signAdd为提交按钮的id
+        // form.on('submit(add)', function(data){
+        //     console.log(data.field);
+        //     $.post("/addHotel",data.field,
+        //         function(data){
+        //             if(data.msg == "success"){
+        //
+        //                 layer.msg("添加成功！");
+        //                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        //                 parent.layer.close(index); // 关闭layer
+        //                 //使父页面重新刷新
+        //                 parent.location.reload();
+        //
+        //             }
+        //             else{
+        //                 layer.msg("该酒店已存在");
+        //             }
+        //         },"json");
+        //     return false;
+        // });
+
+        form.on('submit(add)', function(data){
+            console.log(data.field);
+            $.ajax({
+                type: 'POST',
+                url: '/addHotel',
+                dataType: 'json',
+                data: data.field,
+                async: true,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg('保存成功', {icon: 1, time: 1000});
+                        layer.msg('添加成功',  {icon: 1}, function() {
+                            var indexx = parent.layer.getFrameIndex(window.name); // 先得到当前iframe层的索引
+                            parent.layer.close(indexx);
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg('保存失败！' + result.msg, {icon: 2, time: 1000});
+                    }
+                },
+                error: function (result, type) {
+                    layer.msg('保存失败！', {icon: 2, time: 1000});
+                }
+
+            });
+            return false;
+        });
+
+    });
+</script>
+<script type="text/javascript" src="fjs/editHotel.js" th:src="@{/fjs/editHotel.js}"></script>
+</body>
+</html>

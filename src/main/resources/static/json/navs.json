@@ -1,0 +1,119 @@
+{
+	"contentManagement": [
+		{
+			"title": "报表信息",
+			"icon": "&#xe621;",
+			"href": "/echartList",
+			"spread": false,
+			"children": [
+				{
+					"title": "用户新增报表",
+					"icon": "&#xe669;",
+					"href": "/userChartsList",
+					"spread": false
+				},
+				{
+					"title": "景点新增报表",
+					"icon": "&#xe669;",
+					"href": "/sceneryChartsList",
+					"spread": false
+				},
+				{
+					"title": "酒店新增报表",
+					"icon": "&#xe669;",
+					"href": "/hotelChartsList",
+					"spread": false
+				},
+				{
+					"title": "线路订单收入报表",
+					"icon": "&#xe669;",
+					"href": "/toLineOrderChartsList",
+					"spread": false
+				},
+				{
+					"title": "酒店订单收入报表",
+					"icon": "&#xe669;",
+					"href": "/toHotelOrderChartsList",
+					"spread": false
+				},
+				{
+					"title": "景点订单收入报表",
+					"icon": "&#xe669;",
+					"href": "/toSceneryOrderChartsList",
+					"spread": false
+				}
+			]
+
+		},
+		{
+			"title": "用户管理",
+			"icon": "&#xe621;",
+			"href": "/userList",
+			"spread": false
+
+		},
+		{
+			"title": "景点管理",
+			"icon": "&#xe621;",
+			"href": "/sceneryList",
+			"spread": false
+
+		},
+		{
+			"title": "酒店管理",
+			"icon": "&#xe621;",
+			"href": "/showHotelList",
+			"spread": false
+
+		},
+		{
+			"title": "线路管理",
+			"icon": "&#xe641;",
+			"href": "/showLineList",
+			"spread": false
+		},
+		{
+                        "title":"订单管理",
+                         "icon":"&#xe669;",
+						"href":"#",
+						"spread":false,
+						"children": [
+							  {
+								  "title": "线路订单",
+								  "icon": "&#xe669;",
+								   "href": "/toLineOrderListPage",
+								   "spread": false
+							  },
+							{
+							"title": "酒店订单",
+								"icon": "&#xe669;",
+								"href": "/toHotelOrderListPage",
+								"spread": false
+							},
+							{
+							    "title": "景点订单",
+								"icon": "&#xe669;",
+								"href": "/toSceneryOrderListPage",
+								"spread": false
+							}
+					]
+
+                },
+		{
+			"title": "私人定制提交",
+			"icon": "&#xe621;",
+			"href": "/toPrivateListPgae",
+			"spread": false
+		},
+		{
+			"title": "留言管理",
+			"icon": "&#xe648;",
+			"href": "/showCommentList",
+			"spread": false
+		}
+
+	]
+
+}
+
+

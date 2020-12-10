@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script src="js/echarts.min.js" th:src="@{/js/echarts.min.js}"></script>
+</head>
+<body>
+
+<!--柱状图-->
+<div id="main" style="width: 600px;height:400px;"></div>
+
+
+<script>
+
+    $.ajax({
+        type: "post",
+        url: "/getHotelNames",
+        dataType: "json",
+        success: function (dataJson) {
+            var names = [];
+            var nums = [];
+
+            $.each(dataJson.data,function (i,v) {
+                names[i] = v.name;
+                nums[i] = v.value;
+            });
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '统计新增的酒店数量'
+                },
+                tooltip: {},
+                legend: {
+                    data:['新增']
+                },
+                xAxis: {
+                    data: names
+                },
+                yAxis: {},
+                series: [{
+                    name: '新增',
+                    type: 'bar',
+                    data: nums
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },error: function () {
+            alert("失败了");
+        }
+    });
+
+</script>
+
+</body>
+</html>

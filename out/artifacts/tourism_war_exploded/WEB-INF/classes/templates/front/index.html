@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <th:block th:include="common/commons :: header('我是首页')"/>
+    <link rel="stylesheet" href="css/frontIndex.css" th:href="@{/css/frontIndex.css}" />
+</head>
+<body>
+<th:block th:include="common/commons :: comheader" />
+
+<!-- 轮播图 -->
+<div class="layui-carousel" id="test1" style="margin-bottom: 40px;">
+    <div carousel-item>
+        <div><img src="images/header1.jpeg" style="width: 100%;height: 100%;"></div>
+        <div><img src="images/header2.jpeg" style="width: 100%;height: 100%;"></div>
+        <div><img src="images/header3.jpg" style="width: 100%;height: 100%;"></div>
+        <div><img src="images/header1.jpeg" style="width: 100%;height: 100%;"></div>
+        <div><img src="images/header2.jpeg" style="width: 100%;height: 100%;"></div>
+    </div>
+</div>
+
+
+<div id="contentPic">
+        <div id="moreRout">
+            <!-- 推荐线路图标 -->
+            <i class="layui-icon layui-icon-location" style="font-size: 30px; color: #2577e3;"></i>
+            <h3 id="way" class="way">线路</h3>
+
+            <!-- 如果想要下面出现一条横线，只要加上类名   on就可以了； -->
+            <span class="on" id="sichuanLine">四川</span>
+            <span id="foreignLine">国外旅游</span>
+            <span id="domestic">国内旅游</span>
+            <a href="" class="a_morerout">
+                <i class="layui-icon layui-icon-engine" style="font-size: 30px; color: #2577e3;"></i>
+                <b class="b_moreText">更多线路</b>
+            </a>
+        </div>
+        <!-- 推荐的线路图片 -->
+        <div id="lineDivs" class="layui-row layui-col-space10 lineRecommended" >
+            <div class="layui-col-md3" th:each="line,stat : ${lines}" th:if="${stat.index}<=7">
+                <div class="boxpic">
+                    <div class="pic">
+                        <a th:href="@{/findOneLine(lineId=${line.lineId})}" target="_blank"><img th:src="@{'images/line/'+${line.imgFileName}}" style="width: 250px;height: 230px;"></a>
+                    </div>
+                    <div id="xxxtitle"><a th:href="@{/findOneLine(lineId=${line.lineId})}" target="_blank" class="Tourismtitle" th:text="${line.lineTitle}"></a></div>
+                    <div class="aap">
+                        <p class="pprice_oldprice">
+                            <del class="deMoney">
+                                原价:
+                                <i class="currency_sy">￥</i>
+                                <span th:text="${line.lineOldPrice}" ></span>
+                            </del>
+                            <span class="numprice">
+                                        <b>
+                                            <i class="currency_sy">￥</i>
+                                            <span th:text="${line.linePrice}" style="font-size: 32px;"></span>
+                                        </b>
+                                        起
+                                    </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- 线路推荐下面的广告； -->
+        <div class="layui-row layui-col-space10" style="width: 98%;height: 120px;margin: 0px auto;">
+            <div class="layui-col-md12 line_advertising">
+                <a href="_blank">
+        <!--         这里放一张广告图-->
+                    <img src="images/bodybg.jpg" style="width:100%;height: 120px;">
+                </a>
+            </div>
+        </div>
+
+
+
+
+        <!-- 推荐的景点 点击的图标； -->
+        <div id="moreRout" style="margin-top: 30px;">
+
+            <i class="layui-icon layui-icon-location" style="font-size: 30px; color: #2577e3;"></i>
+            <h3 id="way" class="way">景点</h3>
+
+            <span id="domesticScenery" class="on">国内景点</span>
+            <span id="aroundScenery">周边景点</span>
+            <a href="" class="a_morerout">
+                <i class="layui-icon layui-icon-engine" style="font-size: 30px; color: #2577e3;"></i>
+                <b class="b_moreText">更多景点</b>
+            </a>
+        </div>
+        <!-- 推荐的景点图片和链接； -->
+        <div id="sceneryDivs" class="layui-row layui-col-space10 lineRecommended">
+            <div class="layui-col-md3"  th:each="scenery,stat : ${sceneries}" th:if="${stat.index}<=7">
+                <div class="boxpic">
+                    <div class="pic">
+                        <a th:href="@{/findOneScenery(sceneryId=${scenery.sceneryId})}" target="_blank"><img th:src="@{'images/scenery/'+${scenery.imgFileName}}" style="width: 250px;height: 230px;"></a>
+                    </div>
+                    <div id="xxxtitle"> <a th:href="@{/findOneScenery(sceneryId=${scenery.sceneryId})}" target="_blank" class="Tourismtitle" th:text="${scenery.sceneryTitle}"></a></div>
+                    <div class="aap">
+                        <p class="pprice_oldprice">
+                            <del class="deMoney">
+                                原价:
+                                <i class="currency_sy">￥</i>
+                                <span th:text="${scenery.sceneryOldPrice}"></span>
+                            </del>
+                            <span class="numprice">
+                                            <b>
+                                                <i class="currency_sy">￥</i>
+                                                <span th:text="${scenery.sceneryPrice}" style="font-size: 32px;"></span>
+                                            </b>
+                                            起
+                                        </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- 推荐的酒店标题 -->
+        <div id="moreRout" style="margin-top: 40px;">
+
+            <i class="layui-icon layui-icon-location"
+               style="font-size: 30px; color: #2577e3;"></i>
+            <h3 id="way" class="way">酒店</h3>
+
+            <span id="sichuanHotel" class="on">四川酒店</span>
+            <span id="foreignHotel" >国外酒店</span>
+            <span id="domesticHotel">国内酒店</span>
+            <a href="#" class="a_morerout">
+                <i class="layui-icon layui-icon-engine" style="font-size: 30px; color: #2577e3;"></i>
+                <b class="b_moreText">更多酒店</b>
+            </a>
+        </div>
+        <!-- 推荐的酒店列表图片和列表 -->
+        <div id="HotelsDiv" class="layui-row layui-col-space10 lineRecommended">
+            <div class="layui-col-md3"  th:each="hotel,stat : ${hotels}" th:if="${stat.index}<=7">
+                <div class="boxpic">
+
+                    <div class="pic">
+                        <a th:href="@{/findOneHotel(hotelId=${hotel.hotelId})}" target="_blank"><img th:src="@{'/images/hotel/'+${hotel.imgFileName}}" style="width: 250px;height: 230px;"></a>
+                    </div>
+
+                    <div id="xxxtitle"><a th:href="@{/findOneHotel(hotelId=${hotel.hotelId})}" target="_blank" class="Tourismtitle" th:text="${hotel.hotelName}">洒店的名字</a></div>
+                    <div class="aap">
+                        <p class="pprice_oldprice">
+                            <del class="deMoney">
+                                原价:
+                                <i class="currency_sy">￥</i>
+                                <span th:text="${hotel.hotelOldPrice}"></span>
+                            </del>
+                            <span class="numprice">
+                                            <b>
+                                                <i class="currency_sy">￥</i>
+                                                <span th:text="${hotel.hotelPrice}" style="font-size: 32px;"></span>
+                                            </b>
+                                            起
+                                        </span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<th:block th:include="common/commons :: footer" />
+
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" src="fjs/frontIndex.js" th:src="@{/fjs/frontIndex.js}"></script>
+
+<script>
+    layui.use(['layer', 'form', 'upload', 'laydate','element','carousel'], function() {
+        let layer = layui.layer;
+        let form = layui.form;
+        let upload = layui.upload;
+        let laydate = layui.laydate;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        var carousel = layui.carousel;
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+</script>
+
+</body>
+</html>
+

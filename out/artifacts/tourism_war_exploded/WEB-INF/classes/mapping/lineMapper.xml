@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ITLineInfoMapper">
+
+    <resultMap id="baseMap" type="com.sgu.tourism.entity.TLineInfo">
+        <id column="line_id" property="lineId"/>
+        <result column="start_city" property="startCity"/>
+        <result column="end_city" property="endCity" />
+        <result column="line_title" property="lineTitle" />
+        <result column="line_introduce" property="lineIntroduce"/>
+
+        <result column="line_sup" property="lineSup"/>
+        <result column="line_price" property="linePrice"/>
+        <result column="line_oldPrice" property="lineOldPrice"/>
+        <result column="start_date" property="startDate"/>
+        <result column="trave_days" property="traveDays"/>
+
+        <result column="can_back" property="canBack"/>
+        <result column="note" property="note"/>
+        <result column="create_time" property="createTime"/>
+        <result column="active" property="active"/>
+        <result column="line_type" property="lineType"/>
+    </resultMap>
+
+
+    <resultMap id="baseMap2" type="com.sgu.tourism.vo.UsersCommentsVo">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="imgFileName" property="userImgFileName" />
+        <result column="id" property="commentId" />
+        <result column="content" property="content" />
+        <result column="create_time" property="commentCreateTime" />
+    </resultMap>
+
+    <select id="findAllLines" resultMap="baseMap">
+        SELECT * FROM `t_line_info`
+        <where>
+            <if test="key!=null and key!=''">
+                line_title LIKE CONCAT("%",#{key},"%")
+            </if>
+        </where>
+        ORDER BY line_id DESC LIMIT #{page},#{limit}
+    </select>
+
+    <select id="getCount" resultType="Integer" parameterType="String">
+    SELECT count(*) FROM t_line_info
+    <where>
+        <if test="key!=null and key!=''">
+            line_title LIKE CONCAT("%",#{key},"%")
+        </if>
+    </where>
+</select>
+
+    <select id="findAllTLins" resultType="com.sgu.tourism.entity.TLineInfo">
+        SELECT * FROM `t_line_info`  WHERE line_type = 1 and active = 1 ORDER BY line_id DESC
+    </select>
+
+    <select id="findLinesByLineType" resultType="com.sgu.tourism.entity.TLineInfo">
+        SELECT * FROM `t_line_info` WHERE line_type = #{lineType} AND active = 1 ORDER BY line_id DESC
+    </select>
+
+    <select id="findOneLineById" resultType="com.sgu.tourism.entity.TLineInfo" parameterType="Integer">
+        SELECT * FROM `t_line_info` WHERE line_id = #{lineId}
+    </select>
+
+    <insert id="insertObject" parameterType="com.sgu.tourism.entity.TLineInfo">
+insert into t_line_info(line_id, start_city, end_city, line_title, line_introduce, line_sup, line_price, line_oldPrice, start_date, trave_days, can_back, note, create_time, active, line_type, imgFileName)
+        VALUES(null,#{startCity},#{endCity},#{lineTitle},#{lineIntroduce},#{lineSup},#{linePrice},#{lineOldPrice},#{startDate},#{traveDays},#{canBack},#{note},#{createTime},#{active},#{lineType},#{imgFileName})
+    </insert>
+
+    <update id="updateActiveStatus">
+        UPDATE `t_line_info` SET active = #{status} WHERE line_id = #{lineId}
+    </update>
+
+
+    <update id="updateObject" parameterType="com.sgu.tourism.entity.TLineInfo">
+        update t_line_info
+        <set>
+            <if test="startCity!=null and startCity!=''">
+                start_city = #{startCity},
+            </if>
+            <if test="endCity!=null and endCity!=''">
+                end_city = #{endCity},
+            </if>
+            <if test="lineTitle!=null and lineTitle!=''">
+                line_title = #{lineTitle},
+            </if>
+            <if test="lineIntroduce!=null and lineIntroduce!=''">
+                line_introduce = #{lineIntroduce},
+            </if>
+            <if test="lineSup!=null and lineSup!=''">
+                line_sup = #{lineSup},
+            </if>
+            <if test="linePrice!=null and linePrice!=''">
+                line_price = #{linePrice},
+            </if>
+            <if test="lineOldPrice!=null and lineOldPrice!=''">
+                line_oldPrice = #{lineOldPrice},
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                start_date = #{startDate},
+            </if>
+            <if test="traveDays!=null">
+                trave_days = #{traveDays},
+            </if>
+            <if test="canBack!=null">
+                can_back = #{canBack},
+            </if>
+            <if test="note!=null and note!=''">
+                note = #{note},
+            </if>
+            <if test="lineType!=null">
+                line_type = #{lineType}
+            </if>
+        </set>
+        where line_id = #{lineId}
+    </update>
+
+
+    <delete id="deleteLineById" parameterType="int">
+        delete from t_line_info where line_id = #{lineId}
+    </delete>
+
+    <delete id="deleteAllLine">
+        delete FROM t_line_info where line_id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="findUsersCommentsVos" resultMap="baseMap2">
+        SELECT u.`user_id`,u.`user_name`,u.`imgFileName`,c.`id`,c.`content`,c.`create_time`
+        FROM `comment` c,`user` u WHERE c.`user_id` = u.`user_id` and c.`content_type` = 1
+        AND c.`goods_id` = #{lineId} order by create_time desc LIMIT #{startIndex},3
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

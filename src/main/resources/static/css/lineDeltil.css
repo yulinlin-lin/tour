@@ -1,0 +1,128 @@
+.headnav{
+	margin:0px auto;
+	width: 1200px;
+	height: 800px;
+}
+
+.headnav ul{
+	/*float: left;*/
+	width: 400px;
+	height: 213px;
+	overflow: hidden;
+}
+.headnav ul li{
+	display: none;
+}
+.headnav ul li img{
+	width: 100%;
+	height: auto;
+}
+
+
+#lipicture{
+	width: 400px;
+	height: 100px;
+}
+
+#lipicture ul{
+	width: 100%;
+	height: 100px;
+	margin-top:20px;
+}
+
+#lipicture ul li{
+	display: inline-block;
+	margin-left: 5px;
+	width: 121px;
+	height: 65px;
+	overflow: hidden;
+}
+
+#lipicture ul li img{
+	width: 100%;
+	height: auto;
+
+}
+
+
+
+
+
+/*右边商品详细信息div*/
+
+.right-info{
+	/*float: right;*/
+	margin-right: 30px;
+}
+
+.right-info h2{
+	color: #323232;
+}
+
+.right-info .disrit{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	color: #666;
+}
+
+
+.right-info .info_price{
+	color: #333;
+	width: 532px;
+	height: 77px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color:#fef9ee;
+}
+
+.right-info .info_price .priceold{
+	text-decoration: line-through;
+}
+
+.right-info .place,.pdata,.days,.isback{
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.del-title{
+	padding-left: 10px;
+	background-color: #d2d2d2;
+	overflow: hidden;
+}
+.del-title h2{
+	font-weight: bold;
+	margin-top: 5px;
+	margin-left: 30px;
+}
+.del-title i{
+	line-height: 40px;
+	display: inline-block;
+	height: 30px;
+	border: 4px solid #2577e3;
+	float:left;
+}
+
+
+.person-info{
+	height: 100px;
+
+}
+
+.comments{
+	margin-top: 5px;
+	height: 100px;
+	font-size: 14px;
+	color: #666;
+	line-height: 20px;
+	border-bottom: 2px solid #666;
+}
+
+.comments #dataShow{
+	font-size: 18px;
+	font-weight: bold;
+	text-align: right;
+
+}
+
+#pageComment{
+	text-align: center;
+}

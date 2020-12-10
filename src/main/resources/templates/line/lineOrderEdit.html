@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>考勤列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}"/>
+        <script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body class="childrenBody">
+<div class="x-body">
+    <form class="layui-form">
+
+
+        <div class="layui-form-item magt3" >
+            <div class="layui-input-block">
+                <input type="hidden" name="lineOrderId" value="" class="lineOrderId"/>
+            </div>
+        </div>·
+
+
+        <div class="layui-form-item magt3" >
+            <div class="layui-input-block">
+                <input type="hidden" name="userId" value="" class="userId"/>
+            </div>
+        </div>
+
+        <div class="layui-form-item magt3" >
+        <label class="layui-form-label ">用户名:</label>
+        <div class="layui-input-block">
+            <input type="text" name="userName" class="layui-input userName" required lay-verify="required">
+        </div>
+    </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">用户电话:</label>
+            <div class="layui-input-block">
+                <input type="text" name="userPhone" class="layui-input userPhone" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">用户身份证:</label>
+            <div class="layui-input-block">
+                <input type="text" name="idNumber" class="layui-input idNumber" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userSex" value="男" title="男" checked>
+                <input type="radio" name="userSex" value="女" title="女">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">备注:</label>
+            <div class="layui-input-block">
+                <input type="text" name="userNote" class="layui-input userNote" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">线路标题:</label>
+            <div class="layui-input-block">
+                <input type="text" name="lineTitle"disabled readonly class="layui-input lineTitle layui-disabled"  lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">预订方式:</label>
+            <div class="layui-input-block">
+                <input type="text" name="bookingWay" disabled readonly class="layui-input bookingWay layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+     <!--   <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">出发时间:</label>
+            <div class="layui-input-block">
+                <input type="text" name="startTime" class="layui-input startTime" required lay-verify="required">
+            </div>
+        </div>-->
+
+
+        <div class="layui-inline">
+            <label class="layui-form-label">出发时间</label>
+            <div class="layui-input-inline">
+                <!--placeholder="yyyy-MM-dd HH:mm:ss"-->
+                <input  name="startTime" class="layui-input startTime" id="test5" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">是否可退:</label>
+            <div class="layui-input-block">
+                <input type="text" name="canBack" disabled readonly class="layui-input canBack layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">单价:</label>
+            <div class="layui-input-block">
+                <input type="text" name="onePrice" disabled readonly class="layui-input onePrice layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item magt3">
+            <label class="layui-form-label">订购数量:</label>
+            <div class="layui-input-block">
+                <input type="text" name="number" disabled readonly class="layui-input number layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+        <!--                标题-->
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">总价:</label>
+            <div class="layui-input-block">
+                <input type="number" id="totalPrice" name="totalPrice" disabled readonly class="layui-input totalPrice layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" >
+            <label class="layui-form-label ">下单时间:</label>
+            <div class="layui-input-block">
+                <input type="text" name="createTime" disabled readonly class="layui-input createTime layui-disabled" required lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item magt3" style="margin-left:120px">
+            <button class="layui-btn" lay-submit lay-filter="edit">修改</button>
+        </div>
+
+
+
+    </form>
+</div>
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script  type="text/javascript"  th:inline="none">
+    layui.use(['form','laydate'],function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#test5'
+            ,type: 'date'
+        });
+
+        form.on('submit(edit)',function (data) {
+            // console.log(data.field);
+            $.post("/updateLineOrder",data.field,
+                function(data){
+                    if(data.code == 0){
+
+                        layer.msg(data.msg,{icon:1,time: 3000});
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index); // 关闭layer
+                        //使父页面重新刷新
+                        parent.location.reload();
+
+                    }
+                    else{
+                        layer.msg("更新失败！",{icon:2});
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index); // 关闭layer
+                    }
+                },"json");
+            return false;
+
+        });
+
+
+    });
+</script>
+<script type="text/javascript" src="fjs/editUser.js" th:src="@{/fjs/editUser.js}"></script>
+</body>
+</html>

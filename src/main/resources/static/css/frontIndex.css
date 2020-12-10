@@ -1,0 +1,120 @@
+
+#moreRout{
+    /*margin-left: 50px;*/
+    /*margin-right: 50px;*/
+    padding-left: 60px;
+    border-bottom: 1px solid #ccc;
+}
+
+#way{
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    color: #2577e3;
+}
+
+#moreRout span{
+    display: inline-block;
+    color: #333;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+#moreRout span:hover{
+    border-bottom: 3px solid #2577e3;
+}
+
+#moreRout .a_morerout{
+    margin-left: 700px;
+}
+
+#moreRout .on{
+    border-bottom: 3px solid #2577e3;
+
+}
+
+#moreRout .a_morerout b{
+    display: inline-block;
+    margin-right: 10px;
+    line-height: 50px;
+    font-weight: bold;
+}
+#moreRout .a_morerout b:hover{
+    color: red;
+}
+
+.lineRecommended{
+    margin-top: 10px;
+    padding-left: 70px;
+    padding-right: 70px;
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #e5e5e5;
+    background: #fff;
+}
+
+/*多个图片线路推荐模块；*/
+.lineRecommended .layui-col-md3 .boxpic{
+    text-align: center;
+    width: 250px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #e5e5e5;
+    background: #fff;
+    cursor: pointer;
+
+}
+
+
+
+.lineRecommended .layui-col-md3 .boxpic:hover{
+
+    /*box-shadow: 1px 4px 4px #999;*/
+    box-shadow: 0px 10px 15px #999;
+    position: relative;
+    bottom: 3px;
+}
+
+.lineRecommended .boxpic .aap .Tourismtitle{
+    color: #333;
+
+    font-size: 16px;
+}
+
+.lineRecommended .boxpic .aap .Tourismtitle:hover{
+    color: #fc6000;
+    text-decoration: underline;
+}
+
+
+.lineRecommended .boxpic .aap .deMoney{
+    margin-top: 10px;
+    color: #999;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+}
+
+.lineRecommended .boxpic .aap p .numprice{
+    margin-top: 10px;
+    float: right;
+    color: #fc6000;
+    height: 24px;
+    line-height: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+
+
+.lineRecommended .boxpic .aap .pprice_oldprice{
+    margin-top: 20px;
+}
+
+.line_advertising{
+    width: 100%;
+    height: 100px;
+}

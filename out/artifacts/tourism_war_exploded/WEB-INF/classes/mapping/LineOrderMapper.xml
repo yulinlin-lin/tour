@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ILineOrderMapper">
+
+<!--    配合USerVO-->
+    <resultMap id="baseMap" type="com.sgu.tourism.entity.LineOrder">
+        <id column="lineOrder_id" property="lineOrderId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="id_number" property="idNumber"/>
+        <result column="user_sex" property="userSex"/>
+        <result column="user_note" property="userNote"/>
+        <result column="line_title" property="lineTitle"/>
+        <result column="booking_way" property="bookingWay"/>
+        <result column="start_time" property="startTime"/>
+        <result column="can_back" property="canBack"/>
+        <result column="one_price" property="onePrice"/>
+        <result column="number" property="number"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="insertObject" parameterType="com.sgu.tourism.entity.LineOrder">
+        insert into t_line_order(user_id, user_name, user_phone, id_number, user_sex, user_note, line_title, booking_way, start_time, can_back, one_price, number, total_price, create_time)
+        VALUES (#{userId},#{userName},#{userPhone},#{idNumber},#{userSex},#{userNote},#{lineTitle},#{bookingWay},#{startTime},#{canBack},#{onePrice},#{number},#{totalPrice},#{createTime})
+    </insert>
+
+</mapper>

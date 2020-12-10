@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ISceneryMapper">
+
+    <!--    配合USerVO-->
+    <resultMap id="baseMap" type="com.sgu.tourism.entity.Scenery">
+
+        <id column="scenery_id" property="sceneryId" jdbcType="INTEGER"/>
+        <result column="scenery_city" property="sceneryCity" jdbcType="VARCHAR"/>
+        <result column="scenery_title" property="sceneryTitle" jdbcType="VARCHAR"/>
+        <result column="scenery_price" property="sceneryPrice" jdbcType="VARCHAR"/>
+        <result column="scenery_oldPrice" property="sceneryOldPrice" jdbcType="VARCHAR"/>
+
+        <result column="scenery_detailed1" property="sceneryDetailed1" jdbcType="VARCHAR"/>
+        <result column="scenery_detailed2" property="sceneryDetailed2" jdbcType="VARCHAR"/>
+        <result column="scenery_detailed3" property="sceneryDetailed3" jdbcType="VARCHAR"/>
+        <result column="imgFileName" property="imgFileName" jdbcType="VARCHAR"/>
+
+        <result column="open_time" property="openTime" jdbcType="VARCHAR"/>
+        <result column="scenery_type" property="sceneryType" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="del" property="del"/>
+    </resultMap>
+
+
+    <resultMap id="baseMap2" type="com.sgu.tourism.vo.SceneryCommentsVo">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="userRealName" property="userRealName"/>
+        <result column="imgFileName" property="userImgFileName"/>
+        <result column="id" property="commentId"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="commentCreateTime"/>
+    </resultMap>
+
+    <select id="findAllScenerys" resultMap="baseMap">
+        SELECT * FROM `t_scenery_info`
+        <where>
+            <if test="key!=null and key!=''">
+                scenery_title LIKE CONCAT("%",#{key},"%") and
+            </if>
+            del = 0
+        </where>
+        ORDER BY scenery_id DESC LIMIT #{page},#{limit}
+    </select>
+
+    <select id="getCount" resultType="Integer" parameterType="String">
+    SELECT count(*) FROM `t_scenery_info`
+    <where>
+        <if test="title!=null and title!=''">
+            scenery_title LIKE CONCAT("%",#{title},"%") and
+        </if>
+        del = 0
+    </where>
+</select>
+
+
+    <insert id="insertObject" useGeneratedKeys="true" keyProperty="sceneryId">
+        insert into t_scenery_info(scenery_city, scenery_title, scenery_price, scenery_oldPrice, scenery_detailed1,scenery_detailed2, scenery_detailed3, imgFileName, open_time, scenery_type, create_time,del)
+    values (#{sceneryCity},#{sceneryTitle},#{sceneryPrice},#{sceneryOldPrice},#{sceneryDetailed1},#{sceneryDetailed2},#{sceneryDetailed3},#{imgFileName},#{openTime},#{sceneryType},#{createTime},0)
+    </insert>
+
+    <update id="updateObject">
+        update t_scenery_info
+            <set>
+                <if test="sceneryCity!=null and sceneryCity!=''">
+                    scenery_city = #{sceneryCity},
+                </if>
+                <if test="sceneryTitle!=null and sceneryTitle!=''">
+                    scenery_title = #{sceneryTitle},
+                </if>
+                <if test="sceneryPrice!=null and sceneryPrice!=''">
+                    scenery_price = #{sceneryPrice},
+                </if>
+                <if test="sceneryOldPrice!=null and sceneryOldPrice!=''">
+                    scenery_oldPrice = #{sceneryOldPrice},
+                </if>
+                <if test="sceneryDetailed1!=null and sceneryDetailed1!=''">
+                    scenery_detailed1 = #{sceneryDetailed1},
+                </if>
+                <if test="sceneryDetailed2!=null and sceneryDetailed2!=''">
+                    scenery_detailed2 = #{sceneryDetailed2},
+                </if>
+                <if test="sceneryDetailed3!=null and sceneryDetailed3!=''">
+                    scenery_detailed3 = #{sceneryDetailed3},
+                </if>
+                <if test="openTime!=null and openTime!=''">
+                    open_time = #{openTime},
+                </if>
+                <if test="sceneryType!=null">
+                    scenery_type = #{sceneryType}
+                </if>
+            </set>
+            where scenery_id = #{sceneryId}
+    </update>
+
+
+    <delete id="deleteSceneryById" parameterType="Integer">
+        <!--DELETE FROM `t_scenery_info` WHERE scenery_id = #{sid}-->
+        update t_scenery_info set del = 1 where scenery_id = #{sid}
+    </delete>
+
+
+
+    <select id="selectSceneryById" parameterType="Integer" resultType="com.sgu.tourism.entity.Scenery">
+        SELECT * FROM `t_scenery_info` WHERE scenery_id = #{sid}
+    </select>
+
+
+    <select id="findAllTScenerys" resultType="com.sgu.tourism.entity.Scenery">
+        SELECT * FROM `t_scenery_info` WHERE scenery_type = 2 and del = 0  ORDER BY scenery_id DESC
+    </select>
+
+
+    <select id="getSceneryByType" resultType="com.sgu.tourism.entity.Scenery">
+        SELECT * FROM `t_scenery_info` WHERE scenery_type = #{sceneryType} and del = 0 ORDER BY scenery_id DESC
+    </select>
+
+
+    <select id="getSceneryNames" resultType="com.sgu.tourism.vo.ChartsVo">
+        SELECT COUNT(*) `value`,create_time `name` FROM `t_scenery_info` where del = 0 GROUP BY create_time
+    </select>
+
+    <select id="findSceneryById" resultType="com.sgu.tourism.entity.Scenery">
+        select * from t_scenery_info where scenery_id = #{sceneryId} and del = 0
+    </select>
+
+
+
+    <select id="findSceneryCommentVos" resultMap="baseMap2">
+        SELECT u.`user_id`,u.`user_name`,u.`userRealName`,u.`imgFileName`,c.`id`,c.`content`,c.`create_time`
+        FROM `comment` c,`user` u WHERE c.`user_id` = u.`user_id` AND c.`content_type` = 3
+        AND c.`goods_id` = #{sceneryId}  order by c.`create_time` desc LIMIT #{startIndex},3
+    </select>
+
+</mapper>

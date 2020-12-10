@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ITHotelInfoMapper">
+
+<!--    配合USerVO-->
+    <resultMap id="baseMap" type="com.sgu.tourism.entity.THotelInfo">
+        <id column="hotel_id" property="hotelId"/>
+        <result column="hotel_location" property="hotelLocation"/>
+        <result column="hotel_name" property="hotelName"/>
+        <result column="hotel_price" property="hotelPrice"/>
+        <result column="hotel_oldPrice" property="hotelOldPrice"/>
+        <result column="hotel_detailed" property="hotelDetailed"/>
+        <result column="imgFileName" property="imgFileName"/>
+        <result column="type" property="htype"/>
+        <result column="tel" property="tel"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="baseMap2" type="com.sgu.tourism.vo.HotelCommentsVo">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="imgFileName" property="userImgFileName"/>
+        <result column="id" property="commentId"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="commentCreateTime"/>
+    </resultMap>
+
+
+    <select id="findAllHotels" resultMap="baseMap">
+        SELECT * FROM `t_hotel_info`
+        <where>
+            <if test="key!=null and key!=''">
+                hotel_name LIKE CONCAT("%",#{key},"%")
+            </if>
+        </where>
+        ORDER BY hotel_id DESC LIMIT #{page},#{limit}
+    </select>
+
+
+    <select id="findAllTHotels" resultType="com.sgu.tourism.entity.THotelInfo">
+        SELECT * FROM `t_hotel_info` WHERE `type` = 1 and status = 1 ORDER BY hotel_id DESC
+    </select>
+
+
+    <select id="getCount" resultType="Integer" parameterType="String">
+        SELECT count(*) FROM `t_hotel_info`
+        <where>
+            <if test="key!=null and key!=''">
+                hotel_name LIKE CONCAT("%",#{key},"%")
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insertObject" useGeneratedKeys="true" keyProperty="hotelId">
+insert into t_hotel_info(hotel_id, hotel_location, hotel_name, hotel_price, hotel_oldPrice, hotel_detailed, imgFileName, type, tel, status, create_time)
+        VALUES (null,#{hotelLocation},#{hotelName},#{hotelPrice},#{hotelOldPrice},#{hotelDetailed},#{imgFileName},#{htype},#{tel},#{status},#{createTime})
+
+    </insert>
+
+
+    <delete id="deleteSceneryById" parameterType="Integer">
+        DELETE FROM `t_hotel_info` WHERE hotel_id = #{hid}
+    </delete>
+
+
+    <update id="updateObject">
+        update `t_hotel_info`
+        <set>
+            <if test="hotelLocation!=null and hotelLocation!=''">
+                hotel_location = #{hotelLocation},
+            </if>
+            <if test="hotelName!=null and hotelName!=''">
+                hotel_name = #{hotelName},
+            </if>
+            <if test="hotelPrice!=null and hotelPrice!=''">
+                hotel_price = #{hotelPrice},
+            </if>
+            <if test="hotelOldPrice!=null and hotelOldPrice!=''">
+                hotel_oldPrice = #{hotelOldPrice},
+            </if>
+            <if test="hotelDetailed!=null and hotelDetailed!=''">
+                hotel_detailed = #{hotelDetailed},
+            </if>
+            <if test="htype!=null">
+                `type` = #{htype},
+            </if>
+            <if test="tel!=null and tel!=''">
+                tel = #{tel}
+            </if>
+        </set>
+        where hotel_id = #{hotelId}
+    </update>
+
+
+    <select id="queryHotelById" parameterType="Integer" resultType="com.sgu.tourism.entity.THotelInfo">
+            SELECT * FROM `t_hotel_info` WHERE hotel_id = #{sid}
+    </select>
+
+
+    <update id="updateActiveStatus">
+        UPDATE `t_hotel_info` SET status = #{status} WHERE hotel_id = #{id}
+    </update>
+
+
+    <select id="getSceneryByType" resultType="com.sgu.tourism.entity.THotelInfo">
+            SELECT * FROM `t_hotel_info` WHERE `type` = #{hotelType} AND STATUS = 1 ORDER BY hotel_id DESC
+    </select>
+
+
+
+    <select id="getHotelNames" resultType="com.sgu.tourism.vo.ChartsVo">
+        SELECT COUNT(*) `value`,create_time `name` FROM `t_hotel_info` GROUP BY create_time
+    </select>
+
+
+    <select id="findHotelCommentVos" resultMap="baseMap2">
+        SELECT u.`user_id`,u.`user_name`,u.`imgFileName`,c.`id`,c.`content`,c.`create_time`
+        FROM `comment` c,`user` u WHERE c.`user_id` = u.`user_id` AND c.`content_type` = 2
+        AND c.`goods_id` = #{hotelId}  order by c.`create_time` desc LIMIT #{startIndex},3
+    </select>
+
+
+
+</mapper>

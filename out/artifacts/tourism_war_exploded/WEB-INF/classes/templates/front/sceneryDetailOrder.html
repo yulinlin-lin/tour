@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/commons :: header('我是首页')"/>
+    <!--打开网页，顶部标签页右侧显示图标-->
+    <link rel="Shortcut Icon" href="images/horse.ico" th:src="@{'/images/olige.ico'}">
+</head>
+<body>
+<th:block th:include="common/commons :: comheader" />
+
+<div class="layui-row layui-bg-gray" style="height: 30px;"></div>
+
+<!-- 预订 的信息 -->
+<div class="layui-row">
+    <div class="layui-col-md12 layui-bg-gray" style="height: 200px;">
+        <div>
+            <h2 style="color: black;" th:text="${sceneryTitle}">广西桂林+阳朔+漓江5日4晚跟团游+龙脊0自费 门票1100元 吊脚楼+椿记+喜来登</h2>
+        </div>
+        <div>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>预订方式</th>
+                    <th>景点开放时间</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>全额方式</td>
+                    <td th:text="${sdata}">2016-11-29</td>
+                    <td style="color:#f60 ;font-weight: bold;" th:text="${price}">￥2698</td>
+                    <td th:text="${number}">1</td>
+                    <td style="color:#f60 ;font-weight: bold;" th:text="${count}">￥2698</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="layui-main"><h2>联系人信息</h2></div>
+<!-- 联系人的信息 -->
+<form class="layui-form" action="">
+
+
+    <input type="hidden" name="sceneryName" th:value="${sceneryTitle}">
+    <input type="hidden" name="ticketType" th:value="单人票">
+    <input type="hidden" name="startDate" th:value="${sdata}">
+    <input type="hidden" name="sceneryPrice" th:value="${price}">
+    <input type="hidden" name="sceneryNumber" th:value="${number}">
+    <input type="hidden" name="totalPrice" th:value="${count}">
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">旅客姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="userName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机</label>
+        <div class="layui-input-inline">
+            <input type="text" name="userPhone" required lay-verify="required" placeholder="请输入手机号码" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">请输入正确的手机号码</div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入证件号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="idNumber" required lay-verify="required" placeholder="请输入证件号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">请输入正确的身份证件号码</div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">旅客性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="userSex" value="男" title="男">
+            <input type="radio" name="userSex" value="女" title="女" checked>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注内容</label>
+        <div class="layui-input-block">
+            <textarea name="userNote" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交订单并且付款</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<div class="layui-main" style="width: 1000px;height: 50px;">
+    <div><span style="display: inline-block;">应付金额： </span><h2 style="display: inline-block; font-weight: bold; color: #f60;" th:text="${count}">￥2680</h2></div>
+</div>
+
+
+<th:block th:include="common/commons :: footer" />
+
+
+
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="none">
+
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer
+            ,form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // console.log(JSON.stringify(data.field));
+            // layer.msg(JSON.stringify(data.field));
+
+            $.ajax({
+                type: "post",
+                url: "/sceneryOrderFront/addSceneryOrder",
+                data: data.field,
+                dataType: "json",
+                success: function (resutl) {
+                    if (resutl.code == 0){
+                        layer.msg("下单成功！",{icon: 1});
+
+                        location.href = "/getSuccess/";
+                    }else{
+                        layer.msg("下单失败！",{icon: 2});
+                    }
+
+                },
+                error: function (index) {
+                    layer.msg("发生了系统性错误！",{icon: 2});
+                }
+            });
+
+
+            return false;
+        });
+    });
+
+</script>
+
+</body>
+</html>

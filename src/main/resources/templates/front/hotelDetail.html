@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/commons :: header('我是首页')"/>
+    <!--打开网页，顶部标签页右侧显示图标-->
+    <link rel="Shortcut Icon" href="images/horse.ico" th:src="@{'/images/scenery/horse.ico'}">
+    <!--引入外部样式表-->
+    <link rel="stylesheet" href="css/resetcss.css" th:href="@{/css/resetcss.css}"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}"/>
+
+    <!--引入地图包，地图包网址的ak属性是你在百度地图开放平台上申请的秘钥-->
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=DZnhuUQiSq5QWgmIsx2g4omFi4jAs3EX"></script>
+    <!--引入jquery-->
+<!--   <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>-->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/media/js/jquery.min.js"></script>
+
+
+
+
+    <style type="text/css">
+        .comment_list {
+            padding-top:40px;
+            width:700px;
+            margin:0 auto;
+        }
+        .comment_details {
+            float:left;
+        }
+        .comment_content {
+            margin-top:10px;
+            font-size:16px;
+        }
+        .comment_add_or_last {
+
+            margin:0 auto;
+            clear: both;
+            width:600px;
+            height:40px;
+            background: #F0F0F0;
+            text-align: center;
+            line-height: 40px;   //行高（与div保持同高，垂直居中写法）
+        }
+        .imgdiv{
+            float:left;
+
+        }
+        .imgcss {
+            width:50px;
+            height:50px;
+            border-radius: 50%;
+        }
+        .comment_name {
+            margin-left:10px;
+            color:#3D9EEA;
+            font-size:15px;
+            font-weight: bolder;
+        }
+        .layui-icon {
+            font-size: 10px;
+            color: grey;
+        }
+        .del {
+            margin-left: 55px;
+        }
+    </style>
+</head>
+<body>
+<!--公共的头部信息；-->
+<th:block th:include="common/commons :: comheader" />
+
+<div id="content">
+
+    <div id="goodshow">
+        <div id="imags" style="overflow: visible">
+            <div class="imgbox">
+                <!-- 商品大图 -->
+                <a class="smallimg" href="#">
+                    <img id="smallimg" alt="加载中..." th:src="@{'images/hotel/'+${hotelInfo.imgFileName}}">
+                </a>
+                <div id="layer">
+                </div>
+            </div>
+        </div>
+        <div id="imgtxt">
+            <h2 th:text="${hotelInfo.hotelName}" id="hName">新品上市 连帽中长款毛衣外套 韩版大衣女</h2>
+
+            <div class="goodinfo" th:text="${hotelInfo.hotelDetailed}">此款韩版毛衣外套，是轮廓大衣，时尚，大气，衬皮肤。棉线舒服温暖，你喜欢韩风妹子的不错选择哦！</div>
+            <div class="goodPrice">价格&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="hprice" th:text="${hotelInfo.hotelPrice}">￥266</span></div>
+            <div class="goodPrice">经度&nbsp;&nbsp;&nbsp;&nbsp;<span   th:text="${hotelInfo.lng}">￥266</span></div>
+            <div class="goodPrice">纬度&nbsp;&nbsp;&nbsp;&nbsp;<span   th:text="${hotelInfo.lat}">￥266</span></div>
+            <div class="goodCity">城市&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="location" th:text="${hotelInfo.hotelLocation}">茂名</span></div>
+            <div class="gooddata">酒店电话&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="tel" th:text="${hotelInfo.tel}">1221434</span></div>
+            <div class="goodNumbers">人数&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" id="num" value="1"/></div>
+            <div class="goodinfo" style="margin-top:10px;"><input type="button" style="cursor: pointer;" value="立即购买" class="btngood" id="btnbuy"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                        type="button" value="加入购物车" class="btngood" style="display: none" id="btnadd"/></div>
+        </div>
+
+    </div>
+    <div id="gooddetail">
+
+    </div>
+
+
+    <div class="trafficMap" style="margin-top: 30px;margin-bottom: 30px;">
+        <div><i class="layui-icon layui-icon-location" style="font-size: 30px; color: #1E9FFF;"></i> <h2 style="font-size: 32px; display: inline-block;">交通地图</h2></div>
+        <div id="container" style="width: 800px;height: 500px;"></div>
+    </div>
+</div>
+
+
+<!--评论开始-->
+<div>
+    <div class="comment_list">
+        <h2 >全部评论</h2>
+        <hr>
+        <div class="comment" th:each=" c:${vos}">
+            <div class="imgdiv"><img class="imgcss"  th:src="@{'images/user/'+${c.userImgFileName}}"/></div>
+            <div class="conmment_details">
+                <span class="comment_name" th:text="${c.userRealName}">大白 </span>     <span th:text="${c.commentCreateTime}">22分钟前</span>
+                <div class="comment_content" th:text="${c.content}">  感觉林丹越来越帅了，好棒</div>
+                <div class="del"> <i class="icon layui-icon"  >赞(164)</i>
+                    <a class="del_comment" data-id="1"> <i class="icon layui-icon" >删除</i></a>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+    <div class="comment_add_or_last" >
+        没有更多评论了
+    </div>
+</div>
+<!--评论结束 -->
+
+<!--留言开始-->
+<div class="layui-main" style="margin-top: 20px;">
+    <!--            要对那个货物的进行评论-->
+    <input type="hidden" id="hotelId" th:value="${hotelInfo.hotelId}">
+    <div class="layui-form-item layui-form-text">
+        <label for="L_sign" class="layui-form-label">留言</label>
+        <div class="layui-input-block">
+            <textarea placeholder="随便写些什么刷下存在感" id="L_sign"  name="sign" autocomplete="off" class="layui-textarea" style="height: 80px;"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <button class="layui-btn" key="set-mine" id="addComment" lay-filter="*" lay-submit>确认评论</button>
+    </div>
+</div>
+
+<!--留言结束 -->
+
+<th:block th:include="common/commons :: footer" />
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript"  th:inline="none">
+    layui.use(['form','layer','jquery','element','laypage','form'],function(){
+        var layer = layui.layer;
+
+        $(function () {
+
+            var commentStartIndex = 0;
+
+            $(document).on('click', '.comment_add_or_last', function() {
+                addShow();
+                $(this).html( "点击加载更多");
+            });
+
+
+            // 点击了立即预订的按钮，就会跳转到另外一个页面去；
+            $("#btnbuy").on("click",function () {
+                var priceStr = $("#hprice").text(); //单价格
+                var numberStr = $("#num").val(); // 人数
+
+                var tel = $("#tel").text(); //电话
+                var　hName = $("#hName").text(); //酒店的名字
+
+                let number = new Number(numberStr);  // 人数数字类型
+                var price = new Number(priceStr);  // 单价数字 类型
+                let count = number*price; //小计
+
+                if (price == null || price == NaN || price == ""){layer.msg("单价是空的，违法",{icon: 2});return ;}
+                if (tel == null || tel == NaN || tel == ""){layer.msg("电话是空的，违法",{icon: 2});return ;}
+                if (number == null || number == NaN || number == ""){layer.msg("人数数量是空的，违法",{icon: 2});return ;}
+                if (hName == null || hName == NaN || hName == ""){layer.msg("酒店名称是空的，违法",{icon: 2});return ;}
+                if (count == null || count == NaN || count == ""){layer.msg("小计是空的，违法",{icon: 2});return ;}
+
+                let str = "number="+number+"&price="+price+"&tel="+tel+"&hName="+hName+"&count="+count;
+                window.open("/hotelDetilOrderShow?"+str);
+            });
+
+
+            //添加线路的评论
+            $("#addComment").on("click",function(){
+                var goods_id = $("#hotelId").val();
+                var content = $("#L_sign").val();
+                var content_type = 2;
+                if (content == null || content == ""){
+                    layer.msg("请先写入评论内容！",{icon:2});
+                    return ;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/commentfront/addComment",
+                    dataType: "json",
+                    data: {"goodsId":goods_id,"content":content,"contentType":content_type},
+                    success: function (result) {
+                        if (result.code == 0){
+                            layer.msg("添加成功！",{icon: 1});
+                            location.replace(location);
+                        }else{
+                            layer.msg("添加失败！",{icon: 2});
+                        }
+                    },
+                    error: function (index) {
+                        layer.msg("发生了系统性的错误！",{icon: 2});
+                    }
+                });
+            });
+
+
+            //添加评论异步加载
+            function  addShow() {
+
+                var goods_id = $("#hotelId").val();
+                commentStartIndex += 3;
+                // alert("现在的评论开始下标：  "+commentStartIndex);
+
+                $.ajax({
+                    type: "post",
+                    url: "/commentfront/getMoreHotelComments",
+                    dataType: "json",
+                    data: {"startIndex":commentStartIndex,"goods_id":goods_id},
+                    success: function (result)  {
+                        if (result.code == 0){
+                            var s = " ";
+                            if (result.data == null || result.data == ""){
+                                layer.msg("没有更多了",{icon:2})
+                                $(".comment_add_or_last").html( "没有更多了");
+                                return;
+                            }else {
+                                $.each(result.data,function (i,v) {
+                                    s += '<div class="comment">';
+                                    s += '<div class="imgdiv"><img class="imgcss"  src="images/user/'+v.userImgFileName+'"></div>';
+                                    s += '<div class="conmment_details">';
+                                    s +=  '<span class="comment_name">'+v.userRealName+'</span>     <span>'+v.commentCreateTime+'</span>';
+                                    s +=   '<div class="comment_content" >'+v.content+'</div>';
+                                    s +=   '<div class="del"> <i class="icon layui-icon"  >赞(164)</i>';
+                                    s +=   '<a class="del_comment"  data-id="1"><i class="icon layui-icon" >删除</i></a></div></div><hr></div>';
+
+                                });
+                                $('.comment_list').append(s);
+
+                            }
+                        }else{
+                            layer.msg("没有更多了！",{icon: 2});
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    let lng = [[${hotelInfo.lng}]];   // 酒店的经度
+    let lat = [[${hotelInfo.lat}]];   // 酒店的纬度
+
+    let hotelLocation = [[${hotelInfo.hotelLocation}]];  // 酒店的位置
+    let hotelName = [[${hotelInfo.hotelName}]];   //酒店的酒店名字；
+
+
+    var map = new BMap.Map("container"); // 创建地图实例
+    var point = new BMap.Point(lng,lat); // 创建点坐标 郑州市坐标113.631349, 34.753488
+    map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+    // map.enableScrollWheelZoom(true);      //开启鼠标滚轮缩放
+    map.enableScrollWheelZoom();
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    map.addControl(new BMap.MapTypeControl());
+    var dw=new BMap.GeolocationControl({enableAutoLocation:true});//自动定位控件
+    map.addControl(dw);
+    var dwxx=dw.GeolocationControl;
+    dw.addEventListener("locationSuccess",function(){
+        alert(dwxx);
+    });
+    dw.addEventListener("locationError",function(){
+        alert("定位失败");
+    });
+    //alert(dwxx);
+    var marker = new BMap.Marker(new BMap.Point(113.631349, 34.753488)); // 创建标注
+    map.addOverlay(marker);
+    map.addControl(new BMap.GeolocationControl());//定位控件
+    map.setCurrentCity("北京");
+
+    var companyName = {
+        width: 80,     // 信息窗口宽度
+        height: 30,     // 信息窗口高度
+        title: hotelLocation  // 酒店的位置
+    }
+
+    var infoWindow = new BMap.InfoWindow(hotelName,companyName);  // 创建信息窗口对象
+    map.openInfoWindow(infoWindow, map.getCenter());      // 打开信息窗口
+
+    /*]]>*/
+</script>
+
+
+
+
+</body>
+</html>

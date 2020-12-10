@@ -1,0 +1,269 @@
+<!DOCTYPE>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}" />
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body class="childrenBody">
+<form class="layui-form">
+
+    <blockquote class="layui-elem-quote quoteBox">
+        <form class="layui-form">
+
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input searchVal" placeholder="请输入用户名" />
+                </div>
+                <a class="layui-btn search_btn" data-type="reload">搜索</a>
+            </div>
+
+            <!--<div class="layui-inline">
+                <a class="layui-btn layui-btn-normal addScenery_btn">添加</a>
+            </div>-->
+
+        </form>
+    </blockquote>
+
+    <table id="privateList" lay-filter="privateList"></table>
+
+    <!--操作-->
+    <script type="text/html" id="privateOperate">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
+</form>
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript"  th:inline="none">
+
+    layui.use(['form','layer','laydate','table','laytpl'],function(){
+        let table = layui.table;
+        let form = layui.form;
+
+        var tableIns = table.render({
+            elem: '#privateList',
+            url : '/queryAllPrivates',
+            cellMinWidth : 95,
+            page : true,
+            height : "full-125",
+            limit : 10,
+            limits:[10,15,20,25],
+            id : "privateList",
+            cols:[[
+                {type: 'checkbox', fixed:'left'},
+                {type:'numbers',title:'序号'},
+                {field: 'id', title: 'ID', width:80, align:"center"},
+                {field: 'userName', title: '用户名',align:'center'},
+                {field: 'origin', title: '出发地',width:80,align:"center"},
+                {field: 'destination', title: '目的地',align:'center'},
+                {field: 'departureDate', title: '出发日期',width:180,align:'center'},
+                {field: 'returnDate', title: '结束日期',width:180,align:'center'},
+                {field: 'number', title: '出游人数',align:'center'},
+                {field: 'budget', title: '预算花费',align:'center'},
+                {field: 'phone', title: '电话',width:180,align:'center'},
+                {field: 'line', title: '线路设计',align:'center'},
+                {field: 'airTicket', title: '机票',align:'center'},
+                {field: 'car', title: '用车',align:'center'},
+                {field: 'guide', title: '导游',align:'center'},
+                {field: 'hotel', title: '酒店',align:'center'},
+                {field: 'visa', title: '签证',align:'center'},
+                {field: 'doorTicket', title: '门票',align:'center'},
+                {field: 'dining', title: '用餐',align:'center'},
+                {field: 'note', title: '备注信息',align:'center'},
+                {field: 'tourismType', title: '出游性质',width:120, align:'center'},
+                {field: 'createTime', title: '提交时间',width:180, align:'center'},
+                {title: '操作',  templet:'#privateOperate',width:200,fixed:"right",align:"center"}
+            ]],done: function (res, curr, count) {
+                $("[data-field='line']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+
+                $("[data-field='airTicket']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+
+                $("[data-field='car']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+
+                $("[data-field='guide']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+                $("[data-field='hotel']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+
+
+                $("[data-field='visa']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+
+                $("[data-field='doorTicket']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+                $("[data-field='dining']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("要")
+                    }else if($(this).text()=='0'){
+                        $(this).text("不要")
+                    }
+                });
+                $("[data-field='tourismType']").children().each(function(){
+                    if($(this).text()=='1'){
+                        $(this).text("个人定制")
+                    }else if($(this).text()=='0'){
+                        $(this).text("团队定制")
+                    }
+                });
+            }
+        });
+
+
+        //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+        $(".search_btn").on("click", function () {
+            table.reload("privateList", {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                where: {
+                    key: $(".searchVal").val()  //搜索的关键字
+                }
+            })
+        });
+
+
+
+        //列表操作
+        table.on('tool(privateList)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+
+            if(layEvent === 'edit'){ //编辑
+
+                editPrivateCourtom(data);
+
+            } else if(layEvent === 'del'){ //删除
+                console.log(data.id);
+                layer.confirm('确定删除此信息？',{icon:3, title:'提示信息'},function(index) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deleteByPrivateId',
+                        dataType: 'json',
+                        data: {id:data.id},
+                        success: function (result) {
+                            if (result.code == 0) {
+                                tableIns.reload();
+                                layer.close(index);
+                                layer.msg("删除成功！", {icon: 1},3000);
+                            } else {
+                                layer.msg('删除失败！发生了系统性的错误！！' + result.msg, {icon: 2, time: 1000});
+                            }
+                        },
+                        error: function (result, type) {
+                            layer.msg('删除！ajax函数发生了错误！', {icon: 2, time: 1000});
+                        }
+                    });
+                });
+            } else if(layEvent === 'look'){ //预览
+                layer.alert("此功能需要前台展示，实际开发中传入对应的必要参数进行文章内容页面访问")
+            }
+        });
+
+
+    //    编辑私人定制信息
+        function editPrivateCourtom(edit) {
+            console.log(edit);
+            console.log(edit.airTicket)
+            var index = layui.layer.open({
+                title : "编辑",
+                type : 2,
+                content : "/editPrivateCourtom",
+                success : function(layero, index){
+
+                    var body = layui.layer.getChildFrame('body', index);
+                    if(edit){
+                        body.find("#pid").val(edit.id);
+                        body.find("#hummaNuber").val(edit.number);
+                        body.find("#origin").val(edit.origin);
+                        body.find("#destination").val(edit.destination);
+                        body.find("#departureDate").val(edit.departureDate);
+                        body.find("#returnDate").val(edit.returnDate);
+                        // TODO 修复不知道为什么不能带着到修改页面；
+                        body.find("input[name=tourismType][value=1]").attr("checked",edit.tourismType == 1 ? true : false);
+                        body.find("input[name=tourismType][value=0]").attr("checked",edit.tourismType == 0 ? true : false);
+                        //多选项目的设置
+                        body.find("checkbox[value=11]").attr("checked",true);
+                        body.find("#airTicket1").attr("checked",false);
+                        body.find("#car").attr("checked",edit.car == 1 ? true : false);
+                        body.find("#guide").attr("checked",edit.guide == 1 ? true : false);
+                        body.find("#hotel").attr("checked",edit.hotel == 1 ? true : false);
+                        body.find("#visa").attr("checked",edit.visa == 1 ? true : false);
+                        body.find("#doorTicket").attr("checked",edit.doorTicket == 1 ? true : false);
+                        body.find("#dining").attr("checked",edit.dining == 1 ? true : false);
+
+                        body.find("#budget").val(edit.budget);
+                        body.find("#userName").val(edit.userName);
+                        body.find("#phone").val(edit.phone);
+                        body.find("#note").val(edit.note);
+                        form.render();
+                    }
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
+
+
+
+    });
+
+</script>
+</body>
+</html>

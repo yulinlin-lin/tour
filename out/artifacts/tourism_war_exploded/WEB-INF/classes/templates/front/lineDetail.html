@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/commons :: header('线路详情')"/>
+    <!--打开网页，顶部标签页右侧显示图标-->
+    <link rel="Shortcut Icon" href="images/horse.ico" th:src="@{'/images/scenery/horse.ico'}">
+    <!--引入外部样式表-->
+    <link rel="stylesheet" href="css/resetcss.css" th:href="@{/css/resetcss.css}"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}"/>
+    <style type="text/css">
+        .comment_list {
+            padding-top:40px;
+            width:700px;
+            margin:0 auto;
+        }
+        .comment_details {
+            float:left;
+        }
+        .comment_content {
+            margin-top:10px;
+            font-size:16px;
+        }
+        .comment_add_or_last {
+
+            margin:0 auto;
+            clear: both;
+            width:600px;
+            height:40px;
+            background: #F0F0F0;
+            text-align: center;
+            line-height: 40px;   //行高（与div保持同高，垂直居中写法）
+        }
+        .imgdiv{
+            float:left;
+
+        }
+        .imgcss {
+            width:50px;
+            height:50px;
+            border-radius: 50%;
+        }
+        .comment_name {
+            margin-left:10px;
+            color:#3D9EEA;
+            font-size:15px;
+            font-weight: bolder;
+        }
+        .layui-icon {
+            font-size: 10px;
+            color: grey;
+        }
+        .del {
+            margin-left: 55px;
+        }
+    </style>
+</head>
+<body>
+<th:block th:include="common/commons :: comheader" />
+
+<!--产品信息开始-->
+<div id="content">
+    <div id="goodshow">
+<!--        <div id="imags" style="overflow: visible">
+            <div class="imgbox">
+                <a class="smallimg" href="#">
+                    <img id="smallimg" alt="加载中..." th:src="@{'images/line/'+${lineInfo.imgFileName}}"/>
+                </a>
+                <div id="layer">
+                </div>
+            </div>
+        </div>-->
+
+        <div id="imags">
+            <div id="bigimgs">
+                <ul>
+                    <li><img src="img/good1.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}"/></li>
+                    <li><img src="img/good2.jpg" th:src="@{'images/line/1605699554796_login_bg.jpg'}"/></li>
+                    <li><img src="img/good3.jpg" th:src="@{'images/line/1605692855797_userface2.jpg'}"/></li>
+                    <li><img src="img/good4.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}"/></li>
+                    <li><img src="img/good5.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}"/></li>
+                </ul>
+            </div>
+            <div id="smallimgs">
+                <ul>
+                    <li style="border-color: #cc6688"><img src="img/good1.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}" data-count="0"/></li>
+                    <li><img src="img/good2.jpg" th:src="@{'images/line/1605699554796_login_bg.jpg'}" data-count="1"/></li>
+                    <li><img src="img/good3.jpg" th:src="@{'images/line/1605692855797_userface2.jpg'}" data-count="2"/></li>
+                    <li><img src="img/good4.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}" data-count="3"/></li>
+                    <li><img src="img/good5.jpg" th:src="@{'images/line/'+${lineInfo.imgFileName}}" data-count="4"/></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--商品信息  开始-->
+        <div id="imgtxt">
+            <h2 th:text="${lineInfo.lineTitle}" id="lineTitle">新品上市 连帽中长款毛衣外套 韩版大衣女 </h2>
+
+            <div class="goodinfo" th:text="${lineInfo.lineIntroduce}">此款韩版毛衣外套，是轮廓大衣，时尚，大气，衬皮肤。棉线舒服温暖，你喜欢韩风妹子的不错选择哦！</div>
+            <div class="goodSup" >供应商&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gsub" th:text="${lineInfo.lineSup}">黄俊林</span></div>
+            <div class="goodPrice" >价格&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gprice" th:text="${lineInfo.linePrice}">266</span></div>
+            <div class="goodCity" >出发城市&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gcity" th:text="${lineInfo.startCity}">茂名</span></div>
+            <div class="gooddata" >出游日期&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gdata" th:text="${lineInfo.startDate}">2020-11-19</span></div>
+            <div class="gooddays">出行天数&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gdays" th:text="${lineInfo.traveDays}">4</span></div>
+            <div class="goodCanback">是否可退&nbsp;&nbsp;&nbsp;&nbsp;<span class="price" id="gcanback" th:text="${lineInfo.canBack == 1? '可退':'不可退'}">可退</span></div>
+            <div class="goodNumbers">人数&nbsp;&nbsp;&nbsp;&nbsp;<input type="number" min="1" id="num" value="1"/></div>
+            <div class="goodinfo" style="margin-top:10px;"><input type="button" style="cursor: pointer;" value="立即预订" class="btngood" id="btnbuy"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                        type="button" value="加入购物车" class="btngood" style="display: none" id="btnadd"/></div>
+        </div>
+        <!--商品信息  结束-->
+
+        <!--推荐商品  开始-->
+        <div id="recommend">
+            <h2>热卖商品</h2>
+
+            <div id="rgood">
+                <ul>
+                    <li><a href="#" class="suggest"><img src="img/r1.jpg"></a>
+
+                        <div class="showprice">￥128.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r2.jpg"></a>
+
+                        <div class="showprice">￥238.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r3.jpg"></a>
+
+                        <div class="showprice">￥158.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r4.jpg"></a>
+
+                        <div class="showprice">￥268.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r1.jpg"></a>
+
+                        <div class="showprice">￥128.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r2.jpg"></a>
+
+                        <div class="showprice">￥238.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r3.jpg"></a>
+
+                        <div class="showprice">￥158.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r4.jpg"></a>
+
+                        <div class="showprice">￥268.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r3.jpg"></a>
+
+                        <div class="showprice">￥158.6</div>
+                    </li>
+                    <li><a href="#" class="suggest"><img src="img/r4.jpg"></a>
+
+                        <div class="showprice">￥268.6</div>
+                    </li>
+                </ul>
+            </div>
+            <div id="arrow">
+                <p id="arrtop"></p>
+
+                <p id="arrbot"></p>
+            </div>
+        </div>
+        <!--推荐商品  结束-->
+
+    </div>
+
+    <div id="gooddetail">
+
+    </div>
+
+
+</div>
+<!--产品信息结束-->
+
+<!--评论开始-->
+<div>
+    <div class="comment_list">
+        <h2 >全部评论</h2>
+        <hr>
+        <div class="comment" th:each=" c:${vos}">
+            <div class="imgdiv"><img class="imgcss"  src="images/userface1.jpg" th:src="@{'images/user/'+${c.userImgFileName}}"/></div>
+            <div class="conmment_details">
+                <span class="comment_name" th:text="${c.userName}">大白 </span>     <span th:text="${c.commentCreateTime}">22分钟前</span>
+                <div class="comment_content" th:text="${c.content}">  感觉林丹越来越帅了，好棒</div>
+                <div class="del"> <i class="icon layui-icon"  >赞(164)</i>
+                    <a class="del_comment" data-id="1"> <i class="icon layui-icon" >删除</i></a>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+
+    <div class="comment_add_or_last" >
+        点击加载更多
+    </div>
+</div>
+<!--评论结束 -->
+
+<!--留言板开始-->
+<div class="layui-main" style="margin-top: 20px;">
+    <!--            要对那个货物的进行评论-->
+    <input type="hidden" id="comLineId" th:value="${lineInfo.lineId}">
+    <!--            那个用户评论的，以后要用shiro，我们会从session从获取 ；下面这个要删除-->
+    <input type="hidden" th:value="47">
+    <div class="layui-form-item layui-form-text">
+        <label for="L_sign" class="layui-form-label">留言</label>
+        <div class="layui-input-block">
+            <textarea placeholder="随便写些什么刷下存在感" id="L_sign"  name="sign" autocomplete="off" class="layui-textarea" style="height: 80px;"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <button class="layui-btn" key="set-mine" id="addComment" lay-filter="*" lay-submit>确认评论</button>
+    </div>
+</div>
+<!--留言板结束 -->
+
+
+<th:block th:include="common/commons :: footer" />
+
+<!--显示高清大图-->
+<div id="showbigimg"><img src="img/good1.jpg" id="bigimg"></div>
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript"  th:inline="none">
+    layui.use(['form','layer','jquery','element','laypage','form'],function(){
+        var layer = layui.layer;
+
+        $(function () {
+
+            var commentStartIndex = 0;
+
+            $(document).on('click', '.comment_add_or_last', function() {
+                addShow();
+                $(this).html( "点击加载更多");
+            });
+
+
+            $("#btnbuy").on("click",function () {
+                var priceStr = $("#gprice").text(); //单价格
+                var numberStr = $("#num").val(); // 人数
+
+                var canback = $("#gcanback").text(); //是否可退
+                var　sdata = $("#gdata").text(); //出发时间
+
+                let number = new Number(numberStr);  // 人数数字类型
+                var price = new Number(priceStr);  // 单价数字 类型
+                let lineTitle = $("#lineTitle").text();
+                let count = number*price; //小计
+
+                if (price == null || price == NaN || price == ""){layer.msg("单价是空的，违法",{icon: 2});return ;}
+                if (sdata == null || sdata == NaN || sdata == ""){layer.msg("出发日期是空的，违法",{icon: 2});return ;}
+                if (number == null || number == NaN || number == ""){layer.msg("人数数量是空的，违法",{icon: 2});return ;}
+                if (canback == null || canback == NaN || canback == ""){layer.msg("是不可退信息是空的，违法",{icon: 2});return ;}
+                if (count == null || count == NaN || count == ""){layer.msg("小计是空的，违法",{icon: 2});return ;}
+                if (lineTitle == null || lineTitle == NaN || lineTitle == ""){layer.msg("结题是空的，违法",{icon: 2});return ;}
+
+
+                let str = "number="+number+"&price="+price+"&canback="+canback+"&sdata="+sdata+"&count="+count+"&lineTitle="+lineTitle;
+                window.open("/lineDetilOrderShow?"+str);
+
+            });
+            //添加线路的评论
+            $("#addComment").on("click",function(){
+                var goods_id = $("#comLineId").val();
+                var content = $("#L_sign").val();
+                var content_type = 1;
+                if (content == null || content == ""){
+                    layer.msg("请先写入评论内容！",{icon:2});
+                    return ;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/commentfront/addComment",
+                    dataType: "json",
+                    data: {"goodsId":goods_id,"content":content,"contentType":content_type},
+                    success: function (result) {
+                        if (result.code == 0){
+                            layer.msg("添加成功！",{icon: 1});
+                            location.replace(location);
+                        }else{
+                            layer.msg("添加失败！",{icon: 2});
+                        }
+                    },
+                    error: function (index) {
+                        layer.msg("发生了系统性的错误！",{icon: 2});
+                    }
+                });
+            });
+
+
+            //添加评论异步加载
+            function  addShow() {
+
+                var goods_id = $("#comLineId").val();
+                commentStartIndex += 3;
+                // alert("现在的评论开始下标：  "+commentStartIndex);
+
+                $.ajax({
+                    type: "post",
+                    url: "/commentfront/getMoreComments",
+                    dataType: "json",
+                    data: {"startIndex":commentStartIndex,"goods_id":goods_id},
+                    success: function (result)  {
+                        if (result.code == 0){
+                            var s = " ";
+                            if (result.data == null || result.data == ""){
+                                layer.msg("没有更多了",{icon:2})
+                                $(".comment_add_or_last").html( "没有更多了");
+                                return;
+                            }else {
+                                $.each(result.data,function (i,v) {
+                                    s += '<div class="comment">';
+                                    s += '<div class="imgdiv"><img class="imgcss"  src="images/user/'+v.userImgFileName+'"></div>';
+                                    s += '<div class="conmment_details">';
+                                    s +=  '<span class="comment_name">'+v.userName+'</span>     <span>'+v.commentCreateTime+'</span>';
+                                    s +=   '<div class="comment_content" >'+v.content+'</div>';
+                                    s +=   '<div class="del"> <i class="icon layui-icon"  >赞(164)</i>';
+                                    s +=   '<a class="del_comment"  data-id="1"><i class="icon layui-icon" >删除</i></a></div></div><hr></div>';
+
+                                });
+                                $('.comment_list').append(s);
+
+                            }
+                        }else{
+                            layer.msg("没有更多了！",{icon: 2});
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+<!--图片鼠标移动显示   开始-->
+<script type="text/javascript" th:inline="none">
+    /**
+     * Created by MMY on 2015/11/25.
+     */
+    var doc = document;
+    //商品图片显示
+    var goods = function () {
+        var showimg = doc.getElementById("showbigimg"),
+            bigimg = doc.getElementById("bigimg"),
+            isState = true,//记录鼠标是否在大图上(注意变量不要和函数名重名)
+            bigimgs = doc.getElementById("bigimgs"),
+            imgdiv = bigimgs.getElementsByTagName("ul")[0],
+            imgwidth = bigimgs.getElementsByTagName("img")[0].offsetWidth,
+            smallimgs = doc.getElementById("smallimgs"),
+            smallLis = smallimgs.getElementsByTagName("li"),
+            len = smallLis.length;
+        //阻止事件冒泡
+        function stopBubble(e) {
+            //一般用在鼠标或键盘事件上
+            if (e && e.stopPropagation) {
+                //W3C取消冒泡事件
+                e.stopPropagation();
+            } else {
+                //IE取消冒泡事件
+                e.cancelBubble = true;
+            }
+        }
+
+        //点击大图显示高清图
+        function shoubigimg(event) {
+            var e = event || window.event,
+                target = e.target || e.srcElement;
+            if (target.tagName.toLowerCase() === "img") {
+                //显示大图片
+                bigimg.src = target.src;
+                showimg.style.display = "block";
+                stopBubble(e);
+            }
+        }
+
+        //点击高清图外的区域隐藏图片
+        function hiddenimg() {
+            if (showimg.style.display != "none" && isState) {
+                showimg.style.display = "none";
+            }
+        }
+
+        //鼠标在高清图上时，isState=false;鼠标在高清图外时，isState=true
+        function isout(event) {
+            var e = event || window.event,
+                type = e.type;
+            switch (type) {
+                case "mouseover":
+                    isState = false;
+                    break;
+                case "mouseout":
+                    isState = true;
+            }
+        }
+
+        //小图切换大图
+        function smallToBig(event) {
+            var e = event || window.event,
+                target = e.target || e.srcElement,
+                tagName = target.tagName.toLowerCase(),
+                count = parseInt(target.getAttribute("data-count"));
+            currleft = imgwidth * (-count);
+            if (tagName === "img") {
+                imgdiv.style.left = currleft + "px";
+                for (var i = 0; i < len; i++) {
+                    if (i === count) {
+                        smallLis[i].style.borderColor = "#cc6688";
+                    }
+                    else {
+                        smallLis[i].style.borderColor = "transparent";
+                    }
+                }
+            }
+
+        }
+
+        return {
+            showimg: shoubigimg,
+            hiddenimg: hiddenimg,
+            isout: isout,
+            smallToBig: smallToBig
+        }
+    }();
+    //选择尺寸
+    function selectSize(event) {
+        var e = event || window.event,
+            target = e.target || e.srcElement,
+            pelem = doc.getElementById("size");
+        selectSizeorColor(pelem, target);
+    }
+    //选择颜色
+    function selectColor(event) {
+        var e = event || window.event,
+            target = e.target || e.srcElement,
+            pelem = doc.getElementById("color");
+        selectSizeorColor(pelem, target);
+    }
+    //选择尺寸或颜色
+    function selectSizeorColor(pelem, elem) {
+        var ps = pelem.getElementsByTagName("p");
+        len = ps.length;
+        for (var i = 0; i < len; i++) {
+            ps[i].className = "block";
+        }
+        elem.className += " blockactive";
+    }
+    var check = function () {
+        var detail = doc.getElementById("imgtxt"),
+            goodname = detail.getElementsByTagName("h2")[0].innerHTML,
+            goodprice = detail.getElementsByClassName("price")[0].innerHTML,
+            goodsize = doc.getElementById("size"),
+            goodcolor = doc.getElementById("color"),
+            selectsize, selectcolor,count;
+        //验证是否选择
+        function validateNull() {
+            var ssize = goodsize.getElementsByClassName("blockactive")[0],
+                scolor = goodcolor.getElementsByClassName("blockactive")[0];
+            if (ssize === undefined || scolor === undefined) {
+                alert("请选择尺码或颜色。");
+                return false;
+            }
+            else {
+                selectsize = ssize.innerHTML;
+                selectcolor = scolor.innerHTML;
+                count = doc.getElementById("num").value;
+                return true;
+            }
+
+        }
+
+        //立即购买
+        function buygood() {
+            var isselect = validateNull();
+            if (isselect) {
+                var str = "您购买了如下商品：\n商品名称：" + goodname + "\n商品价格：" + goodprice + "\n商品尺码：" + selectsize + "\n商品颜色：" + selectcolor + "\n商品数量：" + count;
+                alert(str);
+            }
+            else {
+                return false;
+            }
+
+        }
+
+//加入购物车
+        function addgood() {
+            var isselect = validateNull();
+            if (isselect) {
+                var str = "您加入购物车商品如下：\n商品名称：" + goodname + "\n商品价格：" + goodprice + "\n商品尺码：" + selectsize + "\n商品颜色：" + selectcolor + "\n商品数量：" + count;
+                alert(str);
+            }
+            else {
+                return false;
+            }
+        }
+
+        return {
+            buy: buygood,
+            add: addgood
+        }
+    }();
+    //上下切换图片
+    var turnimgs = function () {
+        var div = doc.getElementById("rgood"),
+            divheight = div.offsetHeight,
+            ul = div.getElementsByTagName("ul")[0],
+            lis = div.getElementsByTagName("li"),
+            len = lis.length,
+            varytop = 0,
+            page, totalheight;
+        if (len % 4 == 0) {
+            page = len / 4;
+        }
+        else {
+            page =Math.ceil(len/4);
+        }
+        totalheight = divheight * (page - 1) * (-1);
+        function nextimgs() {
+            if (varytop > totalheight) {
+                varytop -= divheight;
+
+            }
+            else {
+                varytop = 0;
+            }
+            ul.style.top = varytop + "px";
+        }
+
+        function previmgs() {
+            if (varytop < 0) {
+                varytop += divheight;
+
+            }
+            else {
+                varytop = totalheight;
+            }
+            ul.style.top = varytop + "px";
+        }
+
+        return {
+            prev: previmgs,
+            next: nextimgs
+        }
+
+    }();
+    //点击大图显示高清图
+    doc.getElementById("bigimgs").addEventListener("click", goods.showimg, false);
+    //高清图消失
+    doc.addEventListener("mousedown", goods.hiddenimg, false);
+    //记录鼠标的状态，用于让大图消失的功能
+    doc.getElementById("showbigimg").addEventListener("mouseover", goods.isout, false);
+    doc.getElementById("showbigimg").addEventListener("mouseout", goods.isout, false);
+    //点击小图显示大图
+    doc.getElementById("smallimgs").addEventListener("mouseover", goods.smallToBig, false);
+    //选择尺码
+    doc.getElementById("size").addEventListener("click", selectSize, false);
+    //选择颜色
+    doc.getElementById("color").addEventListener("click", selectColor, false);
+    //立即购买
+    doc.getElementById("btnbuy").addEventListener("click", check.buy, false);
+    //加入购物车
+    doc.getElementById("btnadd").addEventListener("click", check.add, false);
+    //上箭头
+    doc.getElementById("arrtop").addEventListener("click", turnimgs.prev, false);
+    //下箭头
+    doc.getElementById("arrbot").addEventListener("click", turnimgs.next, false);
+</script>
+<!--图片鼠标移动显示  结束 -->
+</body>
+</html>

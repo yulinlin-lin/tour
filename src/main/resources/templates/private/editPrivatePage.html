@@ -1,0 +1,198 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/commons :: header('修改私人定制')"/>
+</head>
+<body>
+<div class="layui-content">
+
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+
+        <input type="hidden" name="id" id="pid" value="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">出行人数</label>
+            <div class="layui-input-block">
+                <input type="number" id="hummaNuber" name="number" placeholder="请输入数字" autocomplete="off" required
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <!-- 出发地 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">出发地</label>
+            <div class="layui-input-block">
+                <input type="text" id="origin" name="origin" placeholder="请输入出发地" autocomplete="off" required
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <!-- 目的地 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-block">
+                <input type="text" id="destination" name="destination" placeholder="请输入目的地" autocomplete="off" required
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <!-- 开始日期 -->
+        <div class="layui-inline">
+            <label class="layui-form-label">开始日期：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="departureDate" class="layui-input" id="departureDate"
+                       placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+
+
+        <!-- 结束日期 -->
+        <div class="layui-inline">
+            <label class="layui-form-label">结束日期：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="returnDate" class="layui-input" id="returnDate"
+                       placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">旅游性质</label>
+            <div class="layui-input-block">
+                <input type="radio" name="tourismType" value="0" title="团队定制">
+                <input type="radio" name="tourismType" value="1" title="个人定制">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">需要提供那些服务 </label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="line" value="1" title="线路设计">
+                <input type="checkbox" name="airTicket" value="1" title="机票">
+                <input type="checkbox" name="car" value="1" title="用车">
+                <input type="checkbox" name="guide" value="1" title="导游">
+                <input type="checkbox" name="hotel" value="1" title="酒店">
+                <input type="checkbox" name="visa" value="1" title="签证">
+                <input type="checkbox" name="doorTicket" value="1" title="门票">
+                <input type="checkbox" name="dining" value="1" title="用餐">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">预算花费</label>
+            <div class="layui-input-block">
+                <input type="number" id="budget" name="budget" placeholder="请输入数字" autocomplete="off" required
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input type="text" id="userName" name="userName" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="phone" id="phone" name="phone" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注信息</label>
+            <div class="layui-input-block">
+                <textarea name="note" id="note" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="privateCout">立即定制</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+
+</div>
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use(['form','laydate','carousel','layer'], function(){
+        var form = layui.form;
+        var laydate = layui.laydate;
+        let carousel = layui.carousel;
+        let layer = layui.layer;
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#departureDate'
+            ,type: 'datetime'
+        });
+
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#returnDate'
+            ,type: 'datetime'
+        });
+
+
+        form.on('submit(privateCout)',function(data){
+            console.log(data.field);
+
+            $.ajax({
+                type: 'POST',
+                url: '/updatePrivateCourtomerById',
+                dataType: 'json',
+                data: data.field,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg('修改成功，稍后我们会联系您！', {icon: 1, time: 1000});
+                        layer.msg('修改成功，稍后我们会联系您！',  {icon: 1}, function() {
+                            var indexx = parent.layer.getFrameIndex(window.name); // 先得到当前iframe层的索引
+                            parent.layer.close(indexx);
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg('修改失败！' + result.msg, {icon: 2, time: 1000});
+                    }
+                },
+                error: function (result, type) {
+                    layer.msg('修改失败！ajax函数发生了错误！', {icon: 2, time: 1000});
+                }
+            });
+            /*var index = parent.layer.getFrameIndex(window.name);
+            console.log(index);
+            parent.layer.close(index);*/
+            return false;
+        });
+
+
+//建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,height: '460px'
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+
+
+    });
+</script>
+</body>
+</html>

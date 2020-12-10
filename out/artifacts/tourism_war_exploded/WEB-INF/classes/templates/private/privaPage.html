@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/commons :: header('私人定制页面')"/>
+    <style type="text/css">
+        .titleContent{
+            width: 100%;
+            height: 250px;
+            background-color: #f2f2f2;
+            text-align: center;
+            line-height: 250px;
+            color: #212121;
+        }
+
+        .titleContent h1{
+            font-size: 36px;
+        }
+
+
+        .titleContent span{
+            font-size: 22px;
+            font-weight: bold;
+            color:#919191;
+        }
+
+
+        .order{
+            position: relative;
+            margin-top: 150px;
+            text-align: center;
+        }
+
+        .order .conte{
+            padding-top: 90px;
+            margin: 0 30px;
+            display: inline-block;
+            width: 220px;
+            height: 190px;
+            background-color: #eeeeee;
+        }
+        .order .conte .middle{
+            margin-top: 20px;
+            font-size: 21px;
+            color: #212121;
+        }
+
+
+
+        .order .conte .bottom{
+            margin-top: 10px;
+            font-size: 18px;
+            color: #616161;
+        }
+
+    </style>
+</head>
+<body>
+<th:block th:include="common/commons :: comheader" />
+
+<div class="layui-carousel" id="test1">
+    <div carousel-item>
+        <div><img src="images/banner-1.jpg" th:src="@{/images/banner-1.jpg}"  style="width: 100%;"></div>
+        <div><img src="images/banner-2.jpg" th:src="@{/images/banner-2.jpg}" style="width: 100%;"></div>
+        <div><img src="images/banner-3.jpg" th:src="@{/images/banner-3.jpg}" style="width: 100%;"></div>
+    </div>
+</div>
+
+<div style="text-align: center;">
+    <img src="images/slogan.png" th:src="@{/images/slogan.png}" alt="加载中">
+</div>
+
+
+
+<div class="layui-row titleContent">
+    <h1>不找攻略，不跟团 <span>确认方案前不收费</span></h1>
+</div>
+
+<div class="layui-content">
+
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">出行人数</label>
+            <div class="layui-input-block">
+                <input type="number" id="abc" name="abc" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+
+        <!-- 出发地 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">出发地</label>
+            <div class="layui-input-block">
+                <select name="city" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">北京</option>
+                    <option value="1">上海</option>
+                    <option value="2">广州</option>
+                    <option value="3">深圳</option>
+                    <option value="4">杭州</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- 目的地 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-block">
+                <select name="city" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">北京</option>
+                    <option value="1">上海</option>
+                    <option value="2">广州</option>
+                    <option value="3">深圳</option>
+                    <option value="4">杭州</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <!-- 开始日期 -->
+        <div class="layui-inline">
+            <label class="layui-form-label">开始日期：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+
+
+
+        <!-- 开始日期 -->
+        <div class="layui-inline">
+            <label class="layui-form-label">结束日期：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="0" title="团队定制">
+                <input type="radio" name="sex" value="1" title="个人定制" checked>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="layui-form-item">
+            <label class="layui-form-label">开关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="switch" lay-skin="switch">
+            </div>
+        </div> -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">需要提供那些服务	</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="like[write]" title="线路设计">
+                <input type="checkbox" name="like[read]" title="机票">
+                <input type="checkbox" name="like[dai]" title="用车">
+                <input type="checkbox" name="like[write]" title="导游">
+                <input type="checkbox" name="like[read]" title="酒店">
+                <input type="checkbox" name="like[dai]" title="签证">
+                <input type="checkbox" name="like[read]" title="门票">
+                <input type="checkbox" name="like[dai]" title="用餐">
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input type="number" id="abc" name="abc" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="phone" id="abc" name="abc" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注信息</label>
+            <div class="layui-input-block">
+                <textarea name="note" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="test">立即定制</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+
+</div>
+
+
+<div class="order">
+    <div class="conte">
+        <div class="middle">提出需求</div>
+        <div class="bottom">30秒内接单</div>
+    </div>
+    <div class="conte">
+        <div class="middle">电话沟通</div>
+        <div class="bottom">15分钟内首呼</div>
+    </div>
+    <div class="conte">
+        <div class="middle">确认方案</div>
+        <div class="bottom">4小时制定，改到满意为止</div>
+    </div>
+    <div class="conte">
+        <div class="middle">快乐出行</div>
+        <div class="bottom">明白消费，24小时管家跟进</div>
+    </div>
+</div>
+
+
+
+<th:block th:include="common/commons :: footer" />
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+
+<script>
+    layui.use(['form','laydate','carousel'], function(){
+        var form = layui.form;
+        var laydate = layui.laydate;
+        let carousel = layui.carousel;
+
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#test5'
+            ,type: 'datetime'
+        });
+
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#test6'
+            ,type: 'datetime'
+        });
+
+
+        form.on('submit(test)',function(){
+            var index = parent.layer.getFrameIndex(window.name);
+            console.log(index);
+            parent.layer.close(index);
+        });
+
+
+
+
+//建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,height: '460px'
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+
+
+    });
+</script>
+</body>
+</html>

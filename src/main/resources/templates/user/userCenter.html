@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    <th:block th:include="common/commons :: header('用户中心')"/>-->
+    <title th:text="${title}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <link rel="stylesheet" href="css/global.css" th:href="@{/css/global.css}">
+</head>
+<body>
+<th:block th:include="common/commons :: comheader"/>
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">我的主页</a>
+                <!--  <dl class="layui-nav-child">
+                   <dd><a href="javascript:;">列表一</a></dd>
+                   <dd><a href="javascript:;">列表二</a></dd>
+                   <dd><a href="javascript:;">列表三</a></dd>
+                   <dd><a href="">超链接</a></dd>
+                 </dl> -->
+
+            </li>
+
+            <li class="layui-nav-item" id="mydeInfo">
+                <a href="javascript:;">我的资料</a>
+                <!--  <dl class="layui-nav-child">
+                   <dd><a href="javascript:;">列表一</a></dd>
+                   <dd><a href="javascript:;">列表二</a></dd>
+                   <dd><a href="">超链接</a></dd>
+                 </dl> -->
+            </li>
+
+            <li class="layui-nav-item"  id="mydeImg"><a href="#">我的头像</a></li>
+            <li class="layui-nav-item" id="mydePass"><a href="#" id="mydePass">密码修改</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+
+
+        <!--基本信息-->
+        <div id="myInfo" style="margin-top:150px;">
+            <form class="layui-form" action="">
+
+                <input type="hidden" name="userId" th:value="${session.user.userId}" >
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text"id="userName" name="userName" th:value="${session.user.userName}" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="number" id="phone" name="phone" th:value="${session.user.phone}" required  lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" th:if="${session.user.sex eq 1}">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+
+                        <input  type="radio" name="sex" value="1" title="男" checked>
+                        <input  type="radio" name="sex" value="0" title="女">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" th:if="${session.user.sex eq 0}">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+
+                        <input  type="radio" name="sex" value="1" title="男">
+                        <input  type="radio" name="sex" value="0" title="女" checked>
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即修改</button>
+<!--                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--密码 -->
+        <div id="mypass" class="x-body" style="display: none;margin-top:150px;">
+            <form class="layui-form">
+
+                <input type="hidden" id="userId" name="userId" th:value="${session.user.userId}" >
+
+                <div class="layui-form-item">
+                    <label for="L_oldPass" class="layui-form-label">
+                        <span class="x-red">*</span>当前密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_oldPass" name="oldPass" required="true" lay-verify="pass"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>将会成为您唯一的密码
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="L_newpass" class="layui-form-label">
+                        <span class="x-red">*</span>新密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_newpass" name="newpass" required="true" lay-verify="pass"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        6到16个字符
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                        <span class="x-red">*</span>再次确认密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_repass" name="repass" required="true" lay-verify="repass"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        6到16个字符
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label"></label>
+                    <button  class="layui-btn" lay-filter="updatPass" lay-submit>修改密码</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 上传图片 -->
+        <div id="updateImg" style="display: none; margin-top:150px;">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">上传头像</button>
+                    <!--                图片上传成功后，返回来的图url 保存在下面这个隐藏的input里面；-->
+                    <input type="hidden" id="img_url" name="imgFileName" value=""/>
+
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" th:src="@{'images/user/'+${session.user.imgFileName}}" id="demo1" style="width: 200px; height: 207px;">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            <button type="button" id="updateImgBtn" onclick="updateImg()" class="layui-btn layui-btn-danger">提交修改</button>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- 条目中可以是任意内容，如：<img src=""> -->
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="none">
+
+    layui.use(['upload','laydate','upload'], function(){
+        var carousel = layui.carousel;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: '/uploadImg' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                // alert("上传成功"+res.url);
+                document.getElementById("img_url").value = res.url;
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+    });
+
+
+
+
+    function updateImg() {
+        var userId = $("#userId").val();
+        var  url = $("#img_url").val();
+
+        // alert(userId);
+        // alert(url);
+        $.ajax({
+           type: "POST",
+           url: "/updateUserImg",
+           data: {"userId":userId,"url":url},
+           dataType: "json",
+           success: function (result) {
+               if (result.code == 0){
+                   layer.msg(result.msg,{icon: 1,time: 3000});
+                   location.reload(true);
+                   window.location.reload();
+               }else{
+                   layer.msg(result.msg,{icon: 2,time: 3000});
+               }
+           } ,
+            error: function () {
+                layer.msg("发生了系统性错误，请联系管理员！",{icon: 2,time: 3000});
+            }
+        });
+
+
+    }
+</script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            nikename: function(value){
+                if(value.length < 5){
+                    return '昵称至少得5个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,repass: function(value){
+                if($('#L_newpass').val()!=$('#L_repass').val()){
+                    return '两次密码不一致';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(updatPass)', function(data){
+            // console.log(data.field);
+            //发异步，把数据提交给php
+            $.ajax({
+               type: "POST",
+               url: "/frontUpdateUserPass",
+               data: data.field,
+               dataType: "JSON",
+               success: function (result) {
+                   if (result.code == 0){
+                       layer.msg(result.msg,{icon: 1,time: 3000});
+                   }else{
+                       layer.msg(result.msg,{icon: 2,time: 3000});
+                   }
+               },
+                error: function (index) {
+                    layer.msg("发生了系统性的错误!请联系管理员！",{icon: 2,time: 3000});
+                }
+            });
+
+            return false;
+        });
+
+
+
+        //监听我的资料表单的提交
+        form.on('submit(formDemo)', function(data){
+            // alert(11111)
+            // layer.msg(JSON.stringify(data.field));
+            console.log(data.field);
+
+            $.ajax({
+                type: "POST",
+                url: "/frontUserUpdateById",
+                data: data.field,
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0){
+                        layer.msg(result.msg,{icon: 1,time: 6000});
+                        location.reload();
+                    }else{
+                        layer.msg(result.msg,{icon: 2,time: 6000});
+                    }
+                },
+                error: function (index) {
+                    alert("发生了ajax，严重错误！");
+                }
+            })
+
+            return false;
+        });
+
+
+    });
+</script>
+<script type="text/javascript" th:inline="none">
+    var _hmt = _hmt || []; (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script type="text/javascript" th:inline="none">
+
+    $("#mydeInfo").on("click",function(){
+        $("#myInfo").css("display","block");
+        // mydeImg    mydePass
+        $("#mypass").css("display","none");
+        $("#updateImg").css("display","none");
+    });
+
+
+
+
+    $("#mydeImg").on("click",function(){
+        $("#updateImg").css("display","block");
+        // mydeImg    mydePass
+        $("#mypass").css("display","none");
+        $("#myInfo").css("display","none");
+    });
+
+
+
+    $("#mydePass").on("click",function(){
+        $("#mypass").css("display","block");
+        // mydeImg    mydePass
+        $("#updateImg").css("display","none");
+        $("#myInfo").css("display","none");
+    });
+
+
+
+</script>
+</body>
+</html>

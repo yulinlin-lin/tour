@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script src="js/echarts.min.js" th:src="@{/js/echarts.min.js}"></script>
+</head>
+<body>
+<div id="zxtu" style="width: 600px;height:400px;"></div>
+
+
+<script type="text/javascript" th:inline="javascript">
+
+
+    $.ajax({
+        type: "post",
+        url: "/getSceneryNames",
+        dataType: "json",
+        success: function (dataJson) {
+            var names = [];
+            var nums = [];
+
+            var alldatas = [];
+            console.log(alldatas);
+            $.each(dataJson.data,function (i,v) {
+                names[i] = v.name;
+                nums[i] = v.value;
+                alldatas[i] = v;
+            });
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('zxtu'));
+
+            // 指定图表的配置项和数据
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: names
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: nums,
+                    type: 'line'
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },error: function () {
+            alert("失败了");
+        }
+    });
+
+
+</script>
+
+</body>
+</html>

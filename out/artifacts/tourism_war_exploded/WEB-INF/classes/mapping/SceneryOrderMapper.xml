@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.ISceneryOrderMapper">
+
+    <insert id="insertObject" parameterType="com.sgu.tourism.entity.SceneryOrder">
+        insert into t_scenery_order(user_name, user_phone, id_number, user_sex, user_note, scenery_name, ticket_type, scenery_price, scenery_number, start_date, totalPrice,orderUserName)
+        VALUES (#{userName},#{userPhone},#{idNumber},#{userSex},#{userNote},#{sceneryName},#{ticketType},#{sceneryPrice},#{sceneryNumber},#{startDate},#{totalPrice},#{orderUserName})
+    </insert>
+
+</mapper>

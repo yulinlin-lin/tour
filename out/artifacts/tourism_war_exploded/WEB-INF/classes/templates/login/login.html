@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>登录页面</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" href="css/frontLoing.css" th:href="@{/css/frontLoing.css}"/>
+	<script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+<body>
+<div class="logo-bg">
+	<img src="images/bgtest.jpg" th:src="@{/images/bgtest.jpg}">
+</div>
+<div class="login-from">
+	<div class="tit login-title">登录页面</div>
+	<div class="tit box-t">
+		<div class="txt-tip txt-tip-wrong"></div>
+	</div>
+	<form  id="loginForm"   method="post">
+		<div class="info-box">
+			<div id="hintInfo" class="hint-box">您输入的帐号或密码不正确</div>
+		</div>
+		<div class="item1"><span class="login7-ico"></span><input id="userName" name ="account"   class="txt placeholder" placeholder="请输入帐号"   type="text"></div>
+		<div class="item1"><span class="login7-ico login7-ico1"></span><input id="pwd" name ="pwd"  class="txt placeholder" placeholder="请输入密码"  type="password"></div>
+		<div class="item1">
+			<label class="" id="noNull" style="color: red;display: none;">请输入用户名</label>
+		</div>
+		<div class="item3 " >
+			<label class="checkbox"><input id="rememberId" name="saveusername" value="" class="input-check" type="checkbox">记住帐号</label>
+		</div>
+		<div class="item1 item2"><button id="login-submit" class="btn" type="button">登录</button></div>
+	</form>
+	<div style="text-align: center; margin-top: 10px;"><a href="">注册</a></div>
+</div>
+<div class="msgbox" style="z-index:9999"></div>
+
+
+
+<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript"  th:inline="none">
+	layui.use(['form','layer','jquery','element','laypage','form'],function(){
+		var layer = layui.layer;
+
+		$(function () {
+			$("#login-submit").on("click",function () {
+				login();
+			});
+
+
+			function login() {
+				var userName = $("#userName").val();
+				var pwd = $("#pwd").val();
+
+				if (userName == null || userName == ''){
+					$("#noNull").css("display","block");
+					$("#noNull").text("请输入用户名");
+					return ;
+				}
+				if (pwd == null || pwd == ''){
+					$("#noNull").css("display","block");
+					$("#noNull").text("请输入密码");
+					return ;
+				}
+
+				$.ajax({
+					type: "post",
+					url: "/loginHandle",
+					data: {"userName":userName,"pwd":pwd},
+					dataType: "json",
+					success: function (result) {
+						if (result.code == 0){
+							layer.msg(result.msg,{icon: 1});
+							location.href = "/frontIndex";
+						}else{
+							layer.msg(result.msg,{icon: 2});
+						}
+					},error: function () {
+						layer.msg("发生了系统性错误",{icon: 2});
+					}
+				});
+
+			}
+			
+
+
+
+		});
+	});
+
+
+
+
+
+</script>
+
+</body>
+</html>

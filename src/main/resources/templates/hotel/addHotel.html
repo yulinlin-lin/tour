@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="layui/css/layui.css"  th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}" />
+    <script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+    <script src="js/jquery-1.8.3.min.js" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+
+
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DZnhuUQiSq5QWgmIsx2g4omFi4jAs3EX"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/RectangleZoom/1.2/src/RectangleZoom_min.js"></script>
+    <!--<style type="text/css">
+        body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    </style>-->
+
+</head>
+<body class="childrenBody">
+
+
+<div id="allmap" style="width: 200px;height: 90px;"></div>
+<!--<div id="r-result">请输入:<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>-->
+<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+
+<form class="layui-form layui-row layui-col-space10">
+    <div class="layui-col-md9 layui-col-xs12">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md9 layui-col-xs7">
+
+                <div class="layui-form-item magt3" >
+                    <label class="layui-form-label ">酒店名:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotelName" class="layui-input hotelName" required lay-verify="required">
+                    </div>
+                </div>
+
+
+
+                <!--设置经度和纬度-->
+                <!--  韶关三和酒店的坐标：   经度：113.686454 纬度：24.778573-->
+                <input type="hidden" id="longitude" name="lng" value="">
+                <input type="hidden" id="latitude" name="lat" value="">
+
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">地址:</label>
+                    <div class="layui-input-block">
+<!--                        <input type="text" name="hotelLocation" class="layui-input hotelLocation" required lay-verify="required">-->
+                        <div id="r-result"><input type="text" name="hotelLocation" id="suggestId" class="layui-input hotelLocation" size="20" value="百度" style="width:150px;"  required lay-verify="required"/></div>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">促销价格:</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="hotelPrice" class="layui-input hotelPrice" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">原价格:</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="hotelOldPrice" class="layui-input hotelPrice" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">酒店介绍:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotelDetailed" class="layui-input hotelLocation" required lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">电话:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="tel" class="layui-input hotelLocation" required lay-verify="required">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">景点类型</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="htype" value="1" title="四川酒店">
+                        <input type="radio" name="htype" value="2" title="国内酒店" checked>
+                        <input type="radio" name="htype" value="3" title="国外酒店" checked>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item magt3">
+                    <label class="layui-form-label">上下架:</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="下架|上架" checked>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">照片</label>
+
+                    <div class="layui-input-block">
+                        <!--                下面这个是： 上传的按钮-->
+                        <button type="button" class="layui-btn" id="upload1">上传图片</button>
+                        <!--                图片上传成功后，返回来的图url 保存在下面这个隐藏的input里面；-->
+                        <input type="hidden" id="img_url" name="imgFileName" value=""/>
+
+                        <!--                图片预览的div-->
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item magt3" style="margin-left:120px">
+                    <button class="layui-btn" lay-submit lay-filter="add">提交</button>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<script>
+    layui.use(['layer', 'form', 'upload', 'laydate'], function() {
+        let layer = layui.layer;
+        let form = layui.form;
+        let upload = layui.upload;
+        let laydate = layui.laydate;
+
+        upload.render({
+            elem: '#upload1',
+            url: '/hotelUploadImg',
+            before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            },
+            done: function(res) {
+                // 如果上传失败
+                if(res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                // 上传成功
+                //上传成功
+                alert("上传成功"+res.url);
+                document.getElementById("img_url").value = res.url;
+            },
+            error: function() {
+                // 演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function() {
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+
+
+        //监听提交
+        //signAdd为提交按钮的id
+        // form.on('submit(add)', function(data){
+        //     console.log(data.field);
+        //     $.post("/addHotel",data.field,
+        //         function(data){
+        //             if(data.msg == "success"){
+        //
+        //                 layer.msg("添加成功！");
+        //                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        //                 parent.layer.close(index); // 关闭layer
+        //                 //使父页面重新刷新
+        //                 parent.location.reload();
+        //
+        //             }
+        //             else{
+        //                 layer.msg("该酒店已存在");
+        //             }
+        //         },"json");
+        //     return false;
+        // });
+
+        form.on('submit(add)', function(data){
+            console.log(data.field);
+            $.ajax({
+                type: 'POST',
+                url: '/addHotel',
+                dataType: 'json',
+                data: data.field,
+                async: true,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg('保存成功', {icon: 1, time: 1000});
+                        layer.msg('添加成功',  {icon: 1}, function() {
+                            var indexx = parent.layer.getFrameIndex(window.name); // 先得到当前iframe层的索引
+                            parent.layer.close(indexx);
+                            parent.location.reload();
+                        });
+                    } else {
+                        layer.msg('保存失败！' + result.msg, {icon: 2, time: 1000});
+                    }
+                },
+                error: function (result, type) {
+                    layer.msg('保存失败！', {icon: 2, time: 1000});
+                }
+
+            });
+            return false;
+        });
+
+    });
+</script>
+<script type="text/javascript" src="fjs/editHotel.js" th:src="@{/fjs/editHotel.js}"></script>
+
+<script type="text/javascript">
+
+    // 百度地图API功能
+    function G(id) {
+        return document.getElementById(id);
+    }
+
+    var map = new BMap.Map("allmap");
+    map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+    var myDrag = new BMapLib.RectangleZoom(map, {
+        followText: "拖拽鼠标进行操作"
+    });
+
+    myDrag.open();  //开启拉框放大
+    // myDrag.close();  //关闭拉框放大
+
+    map.centerAndZoom("北京",19);   // 初始化地图,设置城市和地图级别。
+
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        {"input" : "suggestId"
+            ,"location" : map
+        });
+
+    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+        value = "";
+        if (e.toitem.index > -1) {
+            _value = e.toitem.value;
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        G("searchResultPanel").innerHTML = str;
+    });
+
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+        setPlace();
+    });
+
+    function setPlace(){
+        map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun(){
+            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            alert(pp.lng);
+            alert(pp.lat);
+            $("#longitude").val(pp.lng);   // 设置经度
+            $("#latitude").val(pp.lat);   // 设置纬度
+            console.log('经度：'+pp.lng, '纬度：'+pp.lat);
+            map.centerAndZoom(pp, 18);
+            map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        var local = new BMap.LocalSearch(map, { //智能搜索
+            onSearchComplete: myFun
+        });
+        local.search(myValue);
+    }
+
+
+    var companyName = {
+        width: 80,     // 信息窗口宽度
+        height: 30,     // 信息窗口高度
+        title: "海天酒店"  // 信息窗口标题
+    };
+
+    var infoWindow = new BMap.InfoWindow("四川酒店",companyName);  // 创建信息窗口对象
+    map.openInfoWindow(infoWindow, map.getCenter());      // 打开信息窗口
+
+</script>
+</body>
+</html>

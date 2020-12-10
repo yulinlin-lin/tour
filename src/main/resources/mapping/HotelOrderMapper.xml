@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgu.tourism.mapper.IHotelOrderMapper">
+    <insert id="insertObject" parameterType="com.sgu.tourism.entity.HotelOrder">
+
+                insert into t_hotel_order(user_name, user_phone, id_number, user_sex, user_note, hotel_title,liveTime,onePrice,orderNumbers, total_price, orderUser_name, create_time,del)
+                VALUES (#{userName},#{userPhone},#{idNumber},#{userSex},#{userNote},#{hotelTitle},#{liveTime},#{onePrice},#{orderNumbers},#{totalPrice},#{orderUserName},#{createTime},#{del})
+
+    </insert>
+
+    <select id="queryAllHotelOrdes" resultType="com.sgu.tourism.entity.HotelOrder">
+
+                SELECT * FROM `t_hotel_order`
+
+        <where>
+            <if test="key != null and key != ''">
+                user_name LIKE CONCAT("%",#{key},"%") and
+
+            </if>
+
+                        del = 0
+        </where>
+
+                ORDER BY hotelOrder_id DESC LIMIT #{page},#{limit}
+
+    </select>
+
+    <select id="getCount" resultType="Integer" parameterType="String">
+
+                SELECT count(*) FROM `t_hotel_order`
+
+        <where>
+            <if test="key != null and key != ''">
+                user_name LIKE CONCAT("%",#{key},"%") and
+
+            </if>
+
+                        del = 0
+        </where>
+    </select>
+
+    <update id="updateObject" parameterType="com.sgu.tourism.entity.HotelOrder">
+
+                UPDATE `t_hotel_order`
+
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+
+                                user_phone = #{userPhone},
+
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+
+                                id_number = #{idNumber},
+
+            </if>
+            <if test="userSex != null and userSex != ''">
+
+                                user_sex = #{userSex},
+
+            </if>
+            <if test="userNote != null and userNote != ''">
+
+                                user_note = #{userNote},
+
+            </if>
+            <if test="liveTime != null and liveTime != ''">
+
+                                liveTime = #{liveTime},
+            </if>
+        </set>
+
+                where hotelOrder_id = #{hotelOrderId}
+
+    </update>
+
+    <update id="updateDelByHotelOrderId" parameterType="Integer">
+
+                UPDATE `t_hotel_order` SET del = 1 WHERE hotelOrder_id = #{id}
+
+    </update>
+
+    <select id="getHotelInCome" resultType="com.sgu.tourism.vo.ChartsVo">
+
+                select  sum(total_price) as value,create_time as name
+        from t_hotel_order where del = 0
+        group by create_time
+
+    </select>
+</mapper>

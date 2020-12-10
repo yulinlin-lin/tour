@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>首页--layui后台管理模板 2.0</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="layui/css/layui.css" th:href="@{/layui/css/layui.css}" />
+	<link rel="stylesheet" href="css/public.css" th:href="@{/css/public.css}" />
+</head>
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote layui-bg-green">
+		<div id="nowTime"></div>
+	</blockquote>
+	<div class="layui-row layui-col-space10 panel_box"></div>
+
+	<!--<div class="layui-row layui-col-space10">
+		<div class="layui-col-lg6 layui-col-md12">
+			<blockquote class="layui-elem-quote title">系统基本参数</blockquote>
+			<table class="layui-table magt0">
+				<colgroup>
+					<col width="150">
+					<col>
+				</colgroup>
+				<tbody>
+				<tr>
+					<td>当前版本</td>
+					<td class="version">v9.9</td>
+				</tr>
+				<tr>
+					<td>开发作者</td>
+					<td class="author">张三</td>
+				</tr>
+				<tr>
+					<td>网站首页</td>
+					<td class="homePage">index.html</td>
+				</tr>
+				<tr>
+					<td>技术栈</td>
+					<td class="server">LayUI框架，后台：Java1.8，SpringBoot + Mybatis框架</td>
+				</tr>
+				<tr>
+					<td>数据库版本</td>
+					<td class="dataBase">MySQL5.8</td>
+				</tr>
+
+				<tr>
+					<td>当前用户权限</td>
+					<td class="userRights">普通管理员</td>
+				</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+		<div class="layui-col-lg6 layui-col-md12"></div>
+	</div>-->
+
+	<script type="text/javascript" src="layui/layui.js" th:src="@{/layui/layui.js}"></script>
+	<script type="text/javascript" src="js/main.js" th:src="@{/js/main.js}"></script>
+</body>
+</html>

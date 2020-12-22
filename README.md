@@ -5,6 +5,9 @@
 ##### 技术： Sprinbboot + mybatis + springMVC + mysql  +  layUI
 
 
+###### 本项目是一个基于Springboot的旅游线路规划管理系统。里面集成了三种角色用户。后端使用到了快速前端的layUI框架
+
+
 1.前台登录
 -
 ![](https://github.com/yulinlin-lin/tour/blob/main/projectImages/login.PNG)
